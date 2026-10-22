@@ -1,0 +1,3148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso de Menu · 99Food</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --amarelo:#FF8A00;
+    --amarelo-claro:#FFE9D1;
+    --amarelo-borda:#D97400;
+    --preto:#141414;
+    --cinza-escuro:#2B2B2B;
+    --cinza:#6B6B6B;
+    --fundo:#FAFAF6;
+    --branco:#FFFFFF;
+    --verde:#1E9E5A;
+    --verde-claro:#E6F6EC;
+    --vermelho:#D64545;
+    --vermelho-claro:#FBEAEA;
+    --amarelo99:#FFD100;
+    --sombra:0 4px 14px rgba(20,20,20,.08);
+    --sombra-hover:rgba(217,116,0,.25);
+    --destaque-hover:#FF9E2E;
+    --raio:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Poppins',system-ui,-apple-system,sans-serif;
+    background-color:var(--fundo);
+    background-image:
+      linear-gradient(rgba(20,20,20,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(20,20,20,.045) 1px, transparent 1px);
+    background-size:34px 34px;
+    color:var(--preto);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ===== Header ===== */
+  header{
+    background:var(--preto);color:var(--branco);
+    padding:14px 22px;display:flex;align-items:center;gap:14px;
+    position:sticky;top:0;z-index:20;
+    box-shadow:0 2px 10px rgba(0,0,0,.25);
+  }
+  .logo{display:flex;align-items:baseline;gap:2px;font-weight:800;font-size:1.35rem;letter-spacing:-.5px;cursor:pointer;user-select:none;}
+  .logo .n99{background:var(--amarelo99);color:var(--preto);padding:1px 8px;border-radius:8px;}
+  .logo .food{color:var(--branco);}
+  header .sub{
+    font-size:.78rem;color:#BFBFBF;font-weight:500;
+    border-left:2px solid var(--amarelo);padding-left:12px;line-height:1.25;
+  }
+  header .espaco{flex:1;}
+  .progresso-topo{display:flex;align-items:center;gap:10px;}
+  .progresso-topo .barra{
+    width:120px;height:7px;border-radius:999px;background:rgba(255,255,255,.18);overflow:hidden;
+  }
+  .progresso-topo .barra i{display:block;height:100%;background:var(--amarelo);border-radius:999px;transition:width .35s ease;}
+  .progresso-topo .pct{font-size:.76rem;font-weight:700;color:var(--amarelo);min-width:34px;text-align:right;}
+  @media(max-width:640px){ header .sub{display:none;} .progresso-topo .barra{width:76px;} }
+
+  /* ===== Layout ===== */
+  main{flex:1;width:100%;max-width:980px;margin:0 auto;padding:26px 18px 34px;}
+  .trilha{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;min-height:30px;}
+  .trilha .chip{background:var(--preto);color:var(--amarelo);font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:999px;letter-spacing:.02em;}
+  .trilha .passo{background:var(--branco);border:1.5px solid rgba(20,20,20,.15);color:var(--cinza);font-size:.72rem;font-weight:500;padding:5px 12px;border-radius:999px;}
+  .trilha .passo.link{cursor:pointer;}
+  .trilha .passo.link:hover{border-color:var(--amarelo-borda);color:var(--preto);}
+
+  .cartao{
+    background:var(--branco);border-radius:var(--raio);
+    padding:30px 32px;box-shadow:var(--sombra);
+    border:1px solid rgba(20,20,20,.06);
+  }
+  @media(max-width:640px){ .cartao{padding:24px 20px;} main{padding:20px 14px 28px;} }
+
+  .rotulo{
+    display:inline-block;background:var(--amarelo);color:var(--preto);
+    font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    padding:5px 12px;border-radius:999px;margin-bottom:16px;
+  }
+  .rotulo.verde{background:var(--verde);color:#fff;}
+  .rotulo.escuro{background:var(--preto);color:var(--amarelo);}
+  .rotulo.central{display:block;width:fit-content;margin:0 auto 16px;}
+  .titulo-pagina{font-size:1.75rem;font-weight:800;line-height:1.22;letter-spacing:-.4px;margin-bottom:10px;}
+  .contexto{font-size:.95rem;color:var(--cinza-escuro);line-height:1.65;margin-bottom:22px;}
+  .titulo-pagina + .contexto{margin-top:0;}
+  @media(max-width:640px){ .titulo-pagina{font-size:1.4rem;} }
+
+  /* ===== Capa do curso ===== */
+  .capa{text-align:center;padding:6px 0 4px;}
+  .capa .emoji{font-size:2.6rem;line-height:1;margin-bottom:12px;}
+  .capa h1{font-size:2rem;font-weight:800;letter-spacing:-.6px;line-height:1.18;}
+  .capa p{font-size:.96rem;color:var(--cinza-escuro);line-height:1.65;max-width:620px;margin:12px auto 0;}
+  @media(max-width:640px){ .capa h1{font-size:1.55rem;} }
+
+  .painel{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+    margin:24px 0 6px;
+  }
+  .painel .cel{
+    background:var(--fundo);border:1.5px solid rgba(20,20,20,.1);
+    border-radius:14px;padding:14px 12px;text-align:center;
+  }
+  .painel .cel .num{font-size:1.5rem;font-weight:800;line-height:1.1;}
+  .painel .cel .lab{font-size:.72rem;color:var(--cinza);font-weight:500;margin-top:3px;}
+  @media(max-width:520px){ .painel{grid-template-columns:1fr;} }
+
+  .barra-geral{margin:22px 0 4px;}
+  .barra-geral .track{height:12px;border-radius:999px;background:rgba(20,20,20,.08);overflow:hidden;}
+  .barra-geral .track i{display:block;height:100%;background:linear-gradient(90deg,var(--amarelo),var(--amarelo99));border-radius:999px;transition:width .4s ease;}
+  .barra-geral .leg{display:flex;justify-content:space-between;font-size:.78rem;color:var(--cinza);margin-top:8px;font-weight:500;}
+
+  /* ===== Cartões de módulo ===== */
+  .modulos{display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+  .mod-card{
+    display:flex;align-items:flex-start;gap:14px;text-align:left;width:100%;
+    font-family:inherit;cursor:pointer;
+    background:var(--branco);border:1.8px solid rgba(20,20,20,.12);
+    border-radius:14px;padding:16px 18px;
+    transition:border-color .14s ease,box-shadow .14s ease,transform .12s ease;
+  }
+  .mod-card:hover{border-color:var(--amarelo-borda);box-shadow:0 6px 18px var(--sombra-hover);transform:translateY(-1px);}
+  .mod-card:active{transform:scale(.995);}
+  .mod-card .ico{
+    flex:0 0 42px;height:42px;border-radius:12px;background:var(--amarelo-claro);
+    display:flex;align-items:center;justify-content:center;font-size:1.25rem;
+  }
+  .mod-card.ok .ico{background:var(--verde-claro);}
+  .mod-card .corpo{flex:1;min-width:0;}
+  .mod-card .kicker{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--amarelo-borda);}
+  .mod-card.ok .kicker{color:var(--verde);}
+  .mod-card h3{font-size:1rem;font-weight:700;margin:2px 0 4px;line-height:1.3;}
+  .mod-card p{font-size:.84rem;color:var(--cinza);line-height:1.5;}
+  .mod-card .meta{display:flex;align-items:center;gap:8px;margin-top:9px;}
+  .mod-card .mini{height:6px;border-radius:999px;background:rgba(20,20,20,.09);flex:1;overflow:hidden;}
+  .mod-card .mini i{display:block;height:100%;background:var(--amarelo);border-radius:999px;transition:width .35s ease;}
+  .mod-card.ok .mini i{background:var(--verde);}
+  .mod-card .cont{font-size:.74rem;color:var(--cinza);font-weight:600;white-space:nowrap;}
+  .mod-card .selo{flex:0 0 auto;align-self:center;font-size:1.1rem;}
+
+  /* ===== Lista de aulas ===== */
+  .aulas{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+  .aula-item{
+    display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+    font-family:inherit;cursor:pointer;
+    background:var(--branco);border:1.8px solid rgba(20,20,20,.12);
+    border-radius:13px;padding:13px 16px;
+    transition:border-color .14s ease,background .14s ease,transform .12s ease;
+  }
+  .aula-item:hover{border-color:var(--amarelo-borda);background:#FFFCF8;transform:translateY(-1px);}
+  .aula-item .marca{
+    flex:0 0 26px;height:26px;border-radius:50%;
+    border:2px solid rgba(20,20,20,.2);color:var(--cinza);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.74rem;font-weight:700;
+  }
+  .aula-item.ok .marca{background:var(--verde);border-color:var(--verde);color:#fff;}
+  .aula-item .tit{flex:1;font-size:.92rem;font-weight:600;line-height:1.35;}
+  .aula-item.ok .tit{color:var(--cinza-escuro);}
+  .aula-item .seta{color:var(--cinza);font-size:.9rem;}
+
+  .cp-card{
+    display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+    font-family:inherit;cursor:pointer;margin-top:16px;
+    background:transparent;border:1.8px dashed var(--amarelo-borda);
+    border-radius:13px;padding:14px 16px;
+    transition:background .14s ease,transform .12s ease;
+  }
+  .cp-card:hover{background:var(--amarelo-claro);transform:translateY(-1px);}
+  .cp-card.ok{border-style:solid;border-color:var(--verde);background:var(--verde-claro);}
+  .cp-card .tit{flex:1;font-size:.92rem;font-weight:700;}
+  .cp-card .sub{display:block;font-size:.78rem;font-weight:500;color:var(--cinza);margin-top:2px;}
+
+  /* ===== Blocos de conteúdo ===== */
+  .objetivo{
+    background:var(--fundo);border-left:4px solid var(--amarelo);
+    border-radius:0 12px 12px 0;padding:13px 16px;margin-bottom:20px;
+    font-size:.88rem;line-height:1.6;color:var(--cinza-escuro);
+  }
+  .objetivo b{color:var(--preto);}
+  .resposta-texto{font-size:.95rem;line-height:1.7;color:var(--cinza-escuro);margin-bottom:16px;}
+  .resposta-texto strong{color:var(--preto);font-weight:600;}
+  .passos{display:flex;flex-direction:column;gap:9px;margin-bottom:18px;counter-reset:passo;}
+  .passos .item{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--fundo);border:1px solid rgba(20,20,20,.07);
+    border-radius:12px;padding:13px 15px;
+    font-size:.9rem;line-height:1.6;color:var(--cinza-escuro);
+  }
+  .passos .item strong{color:var(--preto);font-weight:600;}
+  .passos .item::before{
+    counter-increment:passo;content:counter(passo);
+    flex:0 0 24px;height:24px;border-radius:7px;
+    background:var(--preto);color:var(--amarelo);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.76rem;font-weight:700;margin-top:1px;
+  }
+  .passos.lista .item::before{content:'•';background:var(--amarelo-claro);color:var(--amarelo-borda);font-size:1rem;}
+  .atencao{
+    background:#FFF8EC;border:1.5px solid var(--amarelo-borda);
+    border-radius:12px;padding:14px 16px;margin-bottom:18px;
+    font-size:.88rem;line-height:1.65;color:var(--cinza-escuro);
+  }
+  .atencao strong{color:var(--preto);}
+  .atencao .atencao-titulo{display:block;margin-bottom:4px;font-weight:700;color:var(--preto);}
+  .caminho{
+    background:var(--preto);color:var(--branco);
+    border-radius:12px;padding:13px 16px;margin-bottom:18px;
+    font-size:.86rem;line-height:1.6;word-break:break-word;
+  }
+  .caminho b{color:var(--amarelo);font-weight:600;}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+  .duo .lado{
+    background:var(--fundo);border:1.5px solid rgba(20,20,20,.1);
+    border-radius:13px;padding:15px 16px;
+  }
+  .duo .lado h4{font-size:.92rem;font-weight:700;margin-bottom:8px;}
+  .duo .lado p{font-size:.85rem;line-height:1.6;color:var(--cinza-escuro);margin-bottom:7px;}
+  .duo .lado p:last-child{margin-bottom:0;}
+  .duo .lado p strong{color:var(--preto);}
+  @media(max-width:640px){ .duo{grid-template-columns:1fr;} }
+  .tabela{width:100%;border-collapse:collapse;margin-bottom:18px;font-size:.86rem;}
+  .tabela th{
+    background:var(--preto);color:var(--amarelo);text-align:left;
+    padding:10px 13px;font-weight:600;font-size:.78rem;letter-spacing:.03em;
+  }
+  .tabela th:first-child{border-radius:10px 0 0 0;}
+  .tabela th:last-child{border-radius:0 10px 0 0;}
+  .tabela td{padding:11px 13px;border-bottom:1px solid rgba(20,20,20,.08);line-height:1.55;color:var(--cinza-escuro);vertical-align:top;}
+  .tabela td strong{color:var(--preto);}
+  .tabela tr:last-child td{border-bottom:none;}
+  .tabela .cod{font-weight:700;color:var(--preto);white-space:nowrap;}
+  .cartao a{color:var(--amarelo-borda);font-weight:600;}
+
+  /* ===== Botões ===== */
+  .btn-opcao{
+    font-family:inherit;font-size:.93rem;font-weight:600;
+    text-align:left;padding:15px 20px;border-radius:13px;
+    border:1.8px solid rgba(20,20,20,.18);background:var(--branco);
+    color:var(--preto);cursor:pointer;
+    transition:transform .12s ease,background .12s ease,border-color .12s ease;
+  }
+  .btn-opcao:hover{background:var(--amarelo-claro);border-color:var(--amarelo-borda);}
+  .btn-opcao:active{transform:scale(.97);}
+  .btn-opcao.destaque{background:var(--amarelo);border-color:var(--amarelo-borda);}
+  .btn-opcao.destaque:hover{background:var(--destaque-hover);}
+  .opcoes{display:flex;flex-direction:column;gap:10px;}
+
+  .acoes-aula{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    margin-top:24px;padding-top:20px;border-top:1.5px solid rgba(20,20,20,.08);
+  }
+  .btn-nav{
+    font-family:inherit;font-size:.85rem;font-weight:600;
+    padding:11px 18px;border-radius:999px;cursor:pointer;
+    border:1.8px solid rgba(20,20,20,.18);background:var(--branco);color:var(--preto);
+    transition:background .14s ease,transform .12s ease,border-color .14s ease;
+  }
+  .btn-nav:hover{background:var(--amarelo-claro);border-color:var(--amarelo-borda);}
+  .btn-nav:active{transform:scale(.97);}
+  .btn-nav.preto{background:var(--preto);color:var(--amarelo);border-color:var(--preto);}
+  .btn-nav.preto:hover{background:var(--cinza-escuro);}
+  .btn-nav.feito{background:var(--verde);color:#fff;border-color:var(--verde);}
+  .btn-nav.feito:hover{background:#17854B;}
+  .btn-nav:disabled{opacity:.4;cursor:default;}
+  .acoes-aula .espaco{flex:1;}
+
+  /* ===== Quiz ===== */
+  .quiz-prog{font-size:.76rem;font-weight:700;color:var(--cinza);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+  .pergunta{font-size:1.2rem;font-weight:700;line-height:1.4;margin-bottom:18px;}
+  .quiz-opcoes{display:flex;flex-direction:column;gap:10px;}
+  .quiz-opcao{
+    font-family:inherit;font-size:.9rem;font-weight:500;
+    text-align:left;padding:14px 18px;border-radius:12px;
+    border:1.8px solid rgba(20,20,20,.2);background:var(--branco);
+    color:var(--preto);cursor:pointer;transition:background .12s ease,border-color .12s ease;
+  }
+  .quiz-opcao:hover:not(:disabled){background:var(--amarelo-claro);border-color:var(--amarelo-borda);}
+  .quiz-opcao:disabled{cursor:default;opacity:.75;}
+  .quiz-opcao.correta{background:var(--verde-claro);border-color:var(--verde);opacity:1;font-weight:600;}
+  .quiz-opcao.errada{background:var(--vermelho-claro);border-color:var(--vermelho);opacity:1;}
+  .quiz-explica{
+    margin-top:16px;padding:14px 18px;border-radius:12px;
+    background:var(--amarelo-claro);border-left:4px solid var(--amarelo-borda);
+    font-size:.86rem;line-height:1.6;color:var(--cinza-escuro);
+  }
+  .quiz-explica strong{color:var(--preto);}
+  .quiz-score{text-align:center;padding:10px 0 4px;}
+  .quiz-score .nota{font-size:2.8rem;font-weight:800;line-height:1.1;}
+  .quiz-score .msg{font-size:.95rem;color:var(--cinza-escuro);margin-top:8px;line-height:1.6;}
+  .selo-aprov{
+    display:inline-block;margin:14px auto 0;padding:8px 18px;border-radius:999px;
+    font-size:.82rem;font-weight:700;
+  }
+  .selo-aprov.ok{background:var(--verde-claro);color:var(--verde);}
+  .selo-aprov.nao{background:var(--vermelho-claro);color:var(--vermelho);}
+
+  /* ===== Busca ===== */
+  .toolbar{max-width:980px;margin:0 auto;padding:14px 18px 2px;display:flex;gap:10px;align-items:center;}
+  .busca-wrap{position:relative;flex:1;}
+  .busca-input{
+    width:100%;font-family:inherit;font-size:.92rem;
+    padding:11px 40px 11px 42px;
+    border:1.8px solid rgba(20,20,20,.16);border-radius:999px;
+    background:var(--branco) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='8' cy='8' r='6'/%3E%3Cpath d='M13 13l4 4'/%3E%3C/svg%3E") 14px center no-repeat;
+    color:var(--preto);transition:border-color .14s ease,box-shadow .14s ease;
+  }
+  .busca-input:focus{outline:none;border-color:var(--amarelo-borda);box-shadow:0 0 0 3px var(--amarelo-claro);}
+  .busca-limpar{
+    position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    border:none;background:rgba(20,20,20,.08);color:var(--cinza-escuro);
+    width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:.9rem;
+    display:none;align-items:center;justify-content:center;line-height:1;
+  }
+  .busca-limpar.on{display:flex;}
+  .res-item{
+    display:block;width:100%;text-align:left;font-family:inherit;cursor:pointer;
+    background:var(--branco);border:1.5px solid rgba(20,20,20,.12);
+    border-radius:12px;padding:12px 15px;margin-bottom:9px;
+    transition:border-color .14s ease;
+  }
+  .res-item:hover{border-color:var(--amarelo-borda);}
+  .res-item .mod{font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--amarelo-borda);}
+  .res-item .tit{font-size:.92rem;font-weight:600;margin-top:2px;}
+  .vazio{text-align:center;color:var(--cinza);font-size:.92rem;padding:28px 0;}
+
+  /* ===== Glossário ===== */
+  .gloss-item{padding:13px 0;border-bottom:1px solid rgba(20,20,20,.08);}
+  .gloss-item:last-child{border-bottom:none;}
+  .gloss-termo{font-size:.95rem;font-weight:700;margin-bottom:3px;}
+  .gloss-def{font-size:.87rem;line-height:1.6;color:var(--cinza-escuro);}
+
+  /* ===== Login ===== */
+  body.travado .toolbar, body.travado footer, body.travado .progresso-topo, body.travado .trilha{display:none;}
+  .cartao-login{max-width:430px;margin:40px auto 0;}
+  .login-topo{text-align:center;margin-bottom:22px;}
+  .login-topo .emoji{font-size:2.4rem;line-height:1;margin-bottom:10px;}
+  .login-topo h1{font-size:1.5rem;font-weight:800;letter-spacing:-.4px;}
+  .login-topo p{font-size:.88rem;color:var(--cinza);margin-top:7px;line-height:1.55;}
+  .campo{margin-bottom:14px;}
+  .campo label{display:block;font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--cinza);margin-bottom:6px;}
+  .campo input{
+    width:100%;font-family:inherit;font-size:.95rem;
+    padding:12px 15px;border-radius:12px;
+    border:1.8px solid rgba(20,20,20,.18);background:var(--branco);color:var(--preto);
+    transition:border-color .14s ease,box-shadow .14s ease;
+  }
+  .campo input:focus{outline:none;border-color:var(--amarelo-borda);box-shadow:0 0 0 3px var(--amarelo-claro);}
+  .btn-entrar{
+    width:100%;font-family:inherit;font-size:.95rem;font-weight:700;
+    padding:14px;border-radius:12px;cursor:pointer;margin-top:6px;
+    background:var(--preto);color:var(--amarelo);border:1.8px solid var(--preto);
+    transition:background .14s ease,transform .12s ease;
+  }
+  .btn-entrar:hover{background:var(--cinza-escuro);}
+  .btn-entrar:active{transform:scale(.98);}
+  .login-erro{
+    display:none;background:var(--vermelho-claro);border:1.5px solid var(--vermelho);
+    color:#8E2727;border-radius:11px;padding:11px 14px;margin-bottom:14px;
+    font-size:.85rem;font-weight:500;line-height:1.5;
+  }
+  .login-erro.on{display:block;}
+  .login-lembrar{display:flex;align-items:center;gap:8px;margin:4px 0 2px;font-size:.84rem;color:var(--cinza-escuro);cursor:pointer;}
+  .login-lembrar input{width:16px;height:16px;accent-color:var(--amarelo-borda);cursor:pointer;}
+  .login-rodape{text-align:center;font-size:.76rem;color:var(--cinza);line-height:1.55;margin-top:20px;}
+  .chip-sync{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border-radius:50%;
+    font-size:.72rem;font-weight:700;cursor:default;user-select:none;
+    background:rgba(255,255,255,.15);color:var(--branco);
+  }
+  .chip-sync.ok{background:rgba(30,158,90,.22);color:#6FE3A5;}
+  .chip-sync.salvando{background:rgba(255,255,255,.15);color:#D9D9D9;}
+  .chip-sync.erro{background:rgba(214,69,69,.25);color:#FF9B9B;cursor:pointer;}
+  .usuario-chip{
+    display:flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.1);border-radius:999px;padding:5px 6px 5px 13px;
+  }
+  .usuario-chip .nome{font-size:.78rem;font-weight:600;color:var(--branco);white-space:nowrap;}
+  .usuario-chip .sair{
+    font-family:inherit;font-size:.72rem;font-weight:700;cursor:pointer;
+    background:var(--amarelo);color:var(--preto);border:none;
+    border-radius:999px;padding:4px 11px;
+  }
+  .usuario-chip .sair:hover{background:var(--destaque-hover);}
+  @media(max-width:640px){ .usuario-chip .nome{display:none;} .usuario-chip{padding:5px;} }
+
+
+  /* ===== Ranking ===== */
+  .podio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:4px 0 20px;align-items:end;}
+  .podio-card{
+    background:var(--fundo);border:1.8px solid rgba(20,20,20,.12);
+    border-radius:14px;padding:16px 12px;text-align:center;
+  }
+  .podio-card.lugar1{border-color:var(--amarelo-borda);background:#FFF8EC;padding-top:22px;padding-bottom:22px;}
+  .podio-card.lugar2{border-color:rgba(20,20,20,.22);}
+  .podio-card.eu{box-shadow:0 0 0 3px var(--amarelo-claro);}
+  .podio-card .medalha{font-size:1.7rem;line-height:1;margin-bottom:7px;}
+  .podio-card.lugar1 .medalha{font-size:2.1rem;}
+  .podio-card .pnome{font-size:.9rem;font-weight:700;line-height:1.3;word-break:break-word;}
+  .podio-card .ppontos{font-size:1.5rem;font-weight:800;margin-top:6px;line-height:1;}
+  .podio-card .ppontos span{font-size:.68rem;font-weight:600;color:var(--cinza);margin-left:3px;}
+  .podio-card .pprova{font-size:.73rem;color:var(--cinza);margin-top:4px;}
+  .voce{
+    display:inline-block;background:var(--amarelo);color:var(--preto);
+    font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    padding:2px 7px;border-radius:999px;vertical-align:middle;
+  }
+  .tabela-rank{display:flex;flex-direction:column;gap:7px;}
+  .linha-rank{
+    display:flex;align-items:center;gap:11px;
+    background:var(--fundo);border:1px solid rgba(20,20,20,.08);
+    border-radius:11px;padding:11px 14px;font-size:.88rem;
+  }
+  .linha-rank.eu{background:#FFF8EC;border-color:var(--amarelo-borda);font-weight:600;}
+  .linha-rank .pos{font-weight:700;color:var(--cinza);min-width:30px;}
+  .linha-rank.eu .pos{color:var(--preto);}
+  .linha-rank .quem{flex:1;color:var(--cinza-escuro);}
+  .linha-rank.eu .quem{color:var(--preto);}
+  .linha-rank .det{font-size:.76rem;color:var(--cinza);font-weight:500;}
+  .linha-rank .pts{font-weight:700;white-space:nowrap;}
+  .linha-rank .pts::after{content:' pts';font-size:.7rem;font-weight:500;color:var(--cinza);}
+  .como-pontua{
+    margin-top:22px;padding:15px 17px;border-radius:12px;
+    background:var(--fundo);border:1px solid rgba(20,20,20,.08);
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .como-pontua strong{font-size:.84rem;margin-bottom:4px;}
+  .como-pontua span{font-size:.83rem;color:var(--cinza-escuro);}
+  .como-pontua span b{color:var(--preto);}
+  .como-pontua em{font-size:.78rem;color:var(--cinza);margin-top:6px;line-height:1.5;}
+  @media(max-width:560px){
+    .podio{grid-template-columns:1fr;align-items:stretch;}
+    .podio-card.lugar1{padding:16px 12px;}
+  }
+
+  /* =========================================================
+     CAMADA VISUAL — movimento, comemorações e cor por módulo
+     Tudo aqui respeita quem pediu menos animação no sistema
+     (prefers-reduced-motion), no fim do bloco.
+     ========================================================= */
+
+  /* ----- entrada das telas ----- */
+  @keyframes surgir{ from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:none;} }
+  @keyframes surgirLeve{ from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:none;} }
+  @keyframes pop{ 0%{transform:scale(.86);} 60%{transform:scale(1.06);} 100%{transform:scale(1);} }
+  @keyframes tremer{ 0%,100%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
+  @keyframes pulsarVerde{ 0%{box-shadow:0 0 0 0 rgba(30,158,90,.45);} 100%{box-shadow:0 0 0 14px rgba(30,158,90,0);} }
+  @keyframes brilho{ from{background-position:-180px 0;} to{background-position:220px 0;} }
+  @keyframes cair{ to{ transform:translateY(105vh) rotate(var(--giro)); opacity:0; } }
+  @keyframes subirToast{ from{opacity:0;transform:translateY(18px) scale(.96);} to{opacity:1;transform:none;} }
+  @keyframes anelGira{ from{transform:rotate(-90deg) scale(.92);} to{transform:rotate(-90deg) scale(1);} }
+
+  #tela > .cartao{ animation:surgir .34s cubic-bezier(.22,.9,.3,1) both; }
+
+  /* ----- entrada em cascata das listas ----- */
+  .passos .item, .mod-card, .aula-item, .podio-card, .linha-rank, .duo .lado, .gloss-item{
+    animation:surgirLeve .3s ease both;
+  }
+  .passos .item:nth-child(1),.mod-card:nth-child(1),.aula-item:nth-child(1),.linha-rank:nth-child(1),.podio-card:nth-child(1),.duo .lado:nth-child(1){animation-delay:.03s}
+  .passos .item:nth-child(2),.mod-card:nth-child(2),.aula-item:nth-child(2),.linha-rank:nth-child(2),.podio-card:nth-child(2),.duo .lado:nth-child(2){animation-delay:.07s}
+  .passos .item:nth-child(3),.mod-card:nth-child(3),.aula-item:nth-child(3),.linha-rank:nth-child(3),.podio-card:nth-child(3){animation-delay:.11s}
+  .passos .item:nth-child(4),.mod-card:nth-child(4),.aula-item:nth-child(4),.linha-rank:nth-child(4){animation-delay:.15s}
+  .passos .item:nth-child(5),.mod-card:nth-child(5),.aula-item:nth-child(5),.linha-rank:nth-child(5){animation-delay:.19s}
+  .passos .item:nth-child(6),.mod-card:nth-child(6),.aula-item:nth-child(6),.linha-rank:nth-child(6){animation-delay:.23s}
+  .passos .item:nth-child(7),.mod-card:nth-child(7),.aula-item:nth-child(7),.linha-rank:nth-child(7){animation-delay:.27s}
+  .passos .item:nth-child(8),.mod-card:nth-child(8),.aula-item:nth-child(8),.linha-rank:nth-child(8){animation-delay:.31s}
+  .passos .item:nth-child(n+9),.mod-card:nth-child(n+9),.aula-item:nth-child(n+9),.linha-rank:nth-child(n+9){animation-delay:.35s}
+
+  /* ----- barras de progresso com brilho ----- */
+  .barra-geral .track i, .mod-card .mini i, .progresso-topo .barra i{ position:relative; overflow:hidden; }
+  .barra-geral .track i::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.65) 50%,transparent 100%);
+    background-size:180px 100%;background-repeat:no-repeat;
+    animation:brilho 2.4s ease-in-out infinite;
+  }
+  .barra-geral .track i{transition:width .7s cubic-bezier(.22,.9,.3,1);}
+  .mod-card .mini i{transition:width .6s cubic-bezier(.22,.9,.3,1);}
+
+  /* ----- anel de progresso da capa ----- */
+  .anel-bloco{display:flex;align-items:center;gap:22px;justify-content:center;margin:26px 0 6px;flex-wrap:wrap;}
+  .anel{position:relative;width:132px;height:132px;flex:0 0 auto;}
+  .anel svg{width:132px;height:132px;transform:rotate(-90deg);animation:anelGira .6s ease both;}
+  .anel circle{fill:none;stroke-width:11;stroke-linecap:round;}
+  .anel .trilho{stroke:rgba(20,20,20,.08);}
+  .anel .valor{stroke:url(#gradAnel);transition:stroke-dashoffset 1s cubic-bezier(.22,.9,.3,1);}
+  .anel .centro{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;line-height:1;
+  }
+  .anel .centro .n{font-size:1.9rem;font-weight:800;letter-spacing:-1px;}
+  .anel .centro .l{font-size:.66rem;font-weight:600;color:var(--cinza);text-transform:uppercase;letter-spacing:.09em;margin-top:3px;}
+  .anel-legenda{text-align:left;max-width:230px;}
+  .anel-legenda .linha{display:flex;align-items:baseline;gap:7px;margin-bottom:7px;font-size:.86rem;color:var(--cinza-escuro);}
+  .anel-legenda .linha b{font-size:1.1rem;font-weight:800;color:var(--preto);}
+  @media(max-width:520px){ .anel-bloco{flex-direction:column;gap:14px;} .anel-legenda{text-align:center;max-width:none;} .anel-legenda .linha{justify-content:center;} }
+
+  /* ----- cor própria de cada módulo ----- */
+  .mod-card{border-left:4px solid var(--mod,transparent);}
+  .mod-card .ico{background:color-mix(in srgb, var(--mod,#FF8A00) 16%, #fff);}
+  .mod-card .kicker{color:var(--mod,var(--amarelo-borda));}
+  .mod-card:hover{border-color:var(--mod,var(--amarelo-borda));box-shadow:0 8px 22px color-mix(in srgb, var(--mod,#FF8A00) 26%, transparent);transform:translateY(-3px);}
+  .mod-card .mini i{background:var(--mod,var(--amarelo));}
+  .mod-card.ok{border-left-color:var(--verde);}
+  .mod-card.ok .ico{background:var(--verde-claro);}
+  .mod-card.ok .kicker{color:var(--verde);}
+  .mod-card.ok .mini i{background:var(--verde);}
+  .mod-card .selo{transition:transform .2s ease;}
+  .mod-card:hover .selo{transform:translateX(4px);}
+  .mod-card.ok .selo{animation:pop .4s ease both;}
+  .faixa-mod{
+    height:5px;border-radius:999px;background:var(--mod,var(--amarelo));
+    margin:-6px 0 18px;width:64px;
+  }
+
+  /* ----- lista de aulas ----- */
+  .aula-item{transition:border-color .14s ease,background .14s ease,transform .14s ease,box-shadow .14s ease;}
+  .aula-item:hover{transform:translateX(4px);box-shadow:0 4px 14px rgba(20,20,20,.06);}
+  .aula-item .marca{transition:background .2s ease,border-color .2s ease,transform .2s ease;}
+  .aula-item.ok .marca{animation:pop .36s ease both;}
+  .aula-item .seta{transition:transform .18s ease;}
+  .aula-item:hover .seta{transform:translateX(3px);}
+
+  /* ----- botão de concluir aula ----- */
+  .btn-nav.feito{animation:pop .34s ease both;}
+  .btn-nav.feito::before{content:'';}
+
+  /* ----- quiz ----- */
+  .quiz-opcao{transition:background .14s ease,border-color .14s ease,transform .12s ease;}
+  .quiz-opcao:hover:not(:disabled){transform:translateX(3px);}
+  .quiz-opcao.correta{animation:pop .4s ease both, pulsarVerde .7s ease .2s both;}
+  .quiz-opcao.errada{animation:tremer .42s ease both;}
+  .quiz-explica{animation:surgirLeve .3s ease both;}
+  .quiz-score .nota{animation:pop .5s ease both;}
+  .selo-aprov{animation:surgirLeve .4s ease .15s both;}
+  .quiz-barra{height:5px;border-radius:999px;background:rgba(20,20,20,.09);overflow:hidden;margin-bottom:14px;}
+  .quiz-barra i{display:block;height:100%;border-radius:999px;background:var(--amarelo);transition:width .45s cubic-bezier(.22,.9,.3,1);}
+
+  /* ----- pódio ----- */
+  .podio-card{transition:transform .18s ease,box-shadow .18s ease;}
+  .podio-card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(20,20,20,.1);}
+  .podio-card .medalha{display:inline-block;animation:pop .5s ease both;}
+  .podio-card.lugar1 .medalha{animation-delay:.1s;}
+  .podio-card.lugar2 .medalha{animation-delay:.2s;}
+  .podio-card.lugar3 .medalha{animation-delay:.3s;}
+
+  /* ----- confete ----- */
+  #confete{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden;}
+  #confete i{
+    position:absolute;top:-16px;width:9px;height:14px;border-radius:2px;
+    animation:cair linear forwards;
+  }
+
+  /* ----- aviso flutuante ----- */
+  #toasts{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
+    z-index:70;display:flex;flex-direction:column;gap:9px;align-items:center;
+    pointer-events:none;width:calc(100% - 32px);max-width:420px;
+  }
+  .toast{
+    display:flex;align-items:center;gap:11px;
+    background:var(--preto);color:var(--branco);
+    border-radius:14px;padding:13px 19px;
+    font-size:.88rem;font-weight:500;line-height:1.4;
+    box-shadow:0 10px 30px rgba(20,20,20,.3);
+    animation:subirToast .32s cubic-bezier(.22,.9,.3,1) both;
+    transition:opacity .3s ease,transform .3s ease;
+  }
+  .toast .ic{font-size:1.2rem;line-height:1;flex:0 0 auto;}
+  .toast b{color:var(--amarelo);}
+  .toast.saindo{opacity:0;transform:translateY(10px);}
+  .toast.festa{background:linear-gradient(120deg,#1E9E5A,#15804a);}
+  .toast.festa b{color:#D8FFE9;}
+
+  /* ----- botões do rodapé ----- */
+  .footer-btn{transition:background .14s ease,border-color .14s ease,transform .14s ease;}
+  .footer-btn:hover{transform:translateY(-2px);}
+
+  /* ----- respeita quem prefere menos movimento ----- */
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:.01ms !important;
+    }
+    #confete{display:none;}
+  }
+
+  /* ===== Tabelas no celular: viram blocos empilhados ===== */
+  @media(max-width:560px){
+    .tabela{display:block;}
+    .tabela thead{display:none;}
+    .tabela tbody,.tabela tr,.tabela td{display:block;width:100%;}
+    .tabela tr{
+      background:var(--fundo);border:1px solid rgba(20,20,20,.1);
+      border-radius:12px;margin-bottom:9px;padding:4px 0;
+    }
+    .tabela td{border-bottom:none;padding:5px 14px;}
+    .tabela td.cod{
+      padding-top:11px;font-size:.78rem;letter-spacing:.05em;
+      text-transform:uppercase;color:var(--amarelo-borda);
+    }
+    .tabela td:last-child{padding-bottom:11px;}
+  }
+
+  /* ===== Diagramas ===== */
+  .figura{
+    margin:0 0 20px;padding:16px 14px 12px;
+    background:var(--fundo);border:1px solid rgba(20,20,20,.08);
+    border-radius:14px;
+    animation:surgirLeve .36s ease .05s both;
+  }
+  .figura svg{display:block;width:100%;height:auto;}
+  .figura figcaption{
+    margin-top:10px;text-align:center;
+    font-size:.79rem;line-height:1.5;color:var(--cinza);
+  }
+  @media(max-width:560px){ .figura{padding:12px 8px 10px;} .figura figcaption{font-size:.74rem;} }
+
+  /* ===== Footer ===== */
+  footer{padding:16px 18px 26px;text-align:center;}
+  .footer-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+  .footer-btn{
+    font-family:inherit;font-size:.82rem;font-weight:600;
+    padding:9px 18px;border-radius:999px;cursor:pointer;
+    border:1.8px solid rgba(20,20,20,.15);background:var(--branco);color:var(--preto);
+    transition:background .14s ease,border-color .14s ease;
+  }
+  .footer-btn:hover{background:var(--amarelo-claro);border-color:var(--amarelo-borda);}
+  footer .nota{font-size:.75rem;color:var(--cinza);line-height:1.5;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo" onclick="irPara('inicio')"><span class="n99">99</span><span class="food">food</span></div>
+  <div class="sub">Curso de Menu<br>Cardápios, Bench, PIC &amp; Tags</div>
+  <div class="espaco"></div>
+  <div class="progresso-topo" title="Progresso do curso">
+    <div class="barra"><i id="barraTopo" style="width:0%"></i></div>
+    <span class="pct" id="pctTopo">0%</span>
+  </div>
+  <span class="chip-sync" id="chipSync" style="display:none" onclick="tentarSyncDeNovo()"></span>
+  <div class="usuario-chip" id="chipUsuario" style="display:none">
+    <span class="nome" id="nomeUsuario"></span>
+    <button class="sair" onclick="sair()">Sair</button>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="busca-wrap">
+    <input class="busca-input" id="busca" type="text" placeholder="Buscar no curso… (ex.: sincronizar, bench, PDV, foto)" autocomplete="off">
+    <button class="busca-limpar" id="buscaLimpar" onclick="limparBusca()" aria-label="Limpar busca">×</button>
+  </div>
+</div>
+
+<main>
+  <div class="trilha" id="trilha"></div>
+  <div id="tela"></div>
+</main>
+
+<footer>
+  <div class="footer-btns">
+    <button class="footer-btn" onclick="irPara('glossario')">🔤 Glossário</button>
+    <button class="footer-btn" onclick="irPara('prova')">🏅 Prova final</button>
+    <button class="footer-btn" onclick="irPara('ranking')">🏆 Ranking</button>
+    <button class="footer-btn" onclick="testarConexao()">🔌 Testar conexão</button>
+    <button class="footer-btn" onclick="zerarProgresso()">↺ Zerar progresso</button>
+  </div>
+  <p class="nota">Curso interno de apoio · Conteúdo baseado no Guia de Fluxos de Menu. Em caso de dúvida não coberta aqui, procure o PoC do seu time.</p>
+</footer>
+<script>
+/* =========================================================
+   SINCRONIZAÇÃO DO PROGRESSO (planilha Google)
+   ---------------------------------------------------------
+   👉 COLE AQUI a URL do App da Web gerada pelo Apps Script
+      (ela termina em /exec). Enquanto esta linha estiver vazia,
+      o curso funciona normalmente, só que o progresso fica
+      guardado apenas no navegador de cada pessoa.
+   ========================================================= */
+
+const URL_PROGRESSO = 'https://script.google.com/macros/s/AKfycbzhsEu-iTbmS8hSXmFDmcV-GEH40frA675i18DFin-vxMyMi0qySNReCJTiXl6cKzrJww/exec';
+
+/* ---------------------------------------------------------
+   Daqui para baixo é o funcionamento — não precisa mexer.
+   --------------------------------------------------------- */
+
+let estadoSync = 'local';        // local | ok | salvando | erro
+let timerSync = null;
+let syncPendente = false;
+let ultimoErroSync = '';
+
+function syncLigado(){ return typeof URL_PROGRESSO === 'string' && URL_PROGRESSO.indexOf('http') === 0; }
+
+function pintarSync(){
+  const el = document.getElementById('chipSync');
+  if(!el) return;
+  if(!syncLigado() || !usuarioAtual){ el.style.display = 'none'; return; }
+  el.style.display = 'inline-flex';
+  const mapa = {
+    ok:       ['✓',  'Progresso salvo na planilha', 'ok'],
+    salvando: ['⟳',  'Salvando…',                   'salvando'],
+    erro:     ['!',  'Erro ao falar com a planilha — clique para ver o detalhe. O progresso está salvo neste navegador.', 'erro'],
+    local:    ['•',  'Conectando…',                 'salvando']
+  };
+  const [icone, titulo, classe] = mapa[estadoSync] || mapa.local;
+  el.textContent = icone;
+  el.title = titulo;
+  el.className = 'chip-sync ' + classe;
+}
+
+function definirSync(estado){ estadoSync = estado; pintarSync(); }
+
+async function chamarPlanilha(corpo){
+  // Content-Type text/plain evita o "preflight" do navegador, que o
+  // Apps Script não responde. O conteúdo continua sendo JSON.
+  const resp = await fetch(URL_PROGRESSO, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(corpo),
+    redirect: 'follow'
+  });
+  if(!resp.ok) throw new Error('HTTP ' + resp.status);
+  const json = await resp.json();
+  if(!json.ok) throw new Error(json.erro || 'falha no servidor');
+  return json.dados;
+}
+
+function corpoBase(acao){
+  return {
+    acao: acao,
+    usuario: usuarioAtual ? usuarioAtual.usuario : '',
+    nome: usuarioAtual ? usuarioAtual.nome : '',
+    resumo: {
+      totalAulas:       (typeof TOTAL_AULAS !== 'undefined' ? TOTAL_AULAS : 0),
+      totalCheckpoints: (typeof CHECKPOINTS !== 'undefined' ? Object.keys(CHECKPOINTS).length : 0),
+      totalProva:       (typeof PROVA !== 'undefined' ? PROVA.perguntas.length : 0)
+    }
+  };
+}
+
+/* Junta o que veio da planilha com o que está neste navegador.
+   Mesma regra do servidor: união das aulas, melhor nota em cada quiz. */
+function mesclarProgresso(a, b){
+  a = a || { aulas:[], checkpoints:{}, prova:null };
+  b = b || { aulas:[], checkpoints:{}, prova:null };
+
+  const vistas = {}, aulas = [];
+  (a.aulas || []).concat(b.aulas || []).forEach(id => {
+    if(id && !vistas[id]){ vistas[id] = true; aulas.push(id); }
+  });
+
+  const cps = {};
+  [a.checkpoints || {}, b.checkpoints || {}].forEach(origem => {
+    Object.keys(origem).forEach(k => {
+      if(!cps[k] || (origem[k].acertos || 0) > (cps[k].acertos || 0)) cps[k] = origem[k];
+    });
+  });
+
+  let prova = a.prova || null;
+  if(b.prova && (!prova || (b.prova.acertos || 0) > (prova.acertos || 0))) prova = b.prova;
+
+  return { aulas, checkpoints: cps, prova };
+}
+
+/* Chamado logo depois do login: busca o progresso da planilha e funde. */
+async function sincronizarEntrada(){
+  if(!syncLigado() || !usuarioAtual) return;
+  definirSync('salvando');
+  try{
+    const remoto = await chamarPlanilha(corpoBase('ler'));
+    const antes = JSON.stringify(progresso);
+    progresso = mesclarProgresso(remoto, progresso);
+    gravarLocal();
+    if(JSON.stringify(progresso) !== antes || !remoto) await enviarAgora();
+    else definirSync('ok');
+    render();
+  }catch(e){
+    ultimoErroSync = traduzirErro(e);
+    definirSync('erro');
+  }
+}
+
+/* Envio com atraso: várias marcações seguidas viram uma chamada só. */
+function agendarSync(){
+  if(!syncLigado() || !usuarioAtual) return;
+  syncPendente = true;
+  definirSync('salvando');
+  clearTimeout(timerSync);
+  timerSync = setTimeout(enviarAgora, 1200);
+}
+
+async function enviarAgora(){
+  if(!syncLigado() || !usuarioAtual) return;
+  clearTimeout(timerSync);
+  try{
+    const corpo = corpoBase('salvar');
+    corpo.dados = progresso;
+    const final = await chamarPlanilha(corpo);
+    if(final){ progresso = final; gravarLocal(); }
+    syncPendente = false;
+    definirSync('ok');
+    render();
+  }catch(e){
+    ultimoErroSync = traduzirErro(e);
+    definirSync('erro');
+  }
+}
+
+async function zerarNaPlanilha(){
+  if(!syncLigado() || !usuarioAtual) return;
+  definirSync('salvando');
+  try{
+    await chamarPlanilha(corpoBase('zerar'));
+    syncPendente = false;
+    definirSync('ok');
+  }catch(e){
+    ultimoErroSync = traduzirErro(e);
+    definirSync('erro');
+  }
+}
+
+/* Busca a classificação de todo mundo. Os nomes de quem está fora do
+   pódio não saem do servidor — a planilha devolve a lista já anonimizada. */
+async function buscarRanking(){
+  if(!syncLigado()) throw new Error('sem planilha');
+  return await chamarPlanilha(corpoBase('ranking'));
+}
+
+/* ---------- diagnóstico ---------- */
+
+function traduzirErro(e){
+  const msg = String(e && e.message ? e.message : e);
+  if(/Failed to fetch|NetworkError|Load failed/i.test(msg)){
+    return 'O navegador não conseguiu chegar até a URL.\n\nCausas mais comuns:\n'
+         + '· A implantação do Apps Script não está como "Qualquer pessoa".\n'
+         + '· A URL colada termina em /dev em vez de /exec.\n'
+         + '· A página está dentro de um iframe que bloqueia chamadas externas (acontece em alguns sites de hospedagem).\n\n'
+         + 'Detalhe técnico: ' + msg;
+  }
+  if(/HTTP 40[13]/.test(msg)){
+    return 'A planilha respondeu negando o acesso (' + msg + ').\n\n'
+         + 'Vá em Implantar → Gerenciar implantações → lápis e deixe "Quem pode acessar" como Qualquer pessoa.';
+  }
+  if(/Unexpected token|JSON/i.test(msg)){
+    return 'A URL respondeu, mas não com os dados esperados — normalmente é a tela de login do Google.\n\n'
+         + 'Isso indica que a implantação não está liberada para "Qualquer pessoa", ou que a URL é a /dev.\n\n'
+         + 'Detalhe técnico: ' + msg;
+  }
+  return msg;
+}
+
+function tentarSyncDeNovo(){
+  if(estadoSync !== 'erro') return;
+  const ver = confirm('Não foi possível salvar na planilha.\n\n' + (ultimoErroSync || 'Erro desconhecido.')
+            + '\n\nURL configurada:\n' + URL_PROGRESSO
+            + '\n\nClique em OK para tentar de novo agora.');
+  if(ver) enviarAgora();
+}
+
+/* Botão "Testar conexão" do rodapé. */
+async function testarConexao(){
+  if(!syncLigado()){
+    alert('A sincronização está desligada.\n\nO progresso está sendo salvo apenas neste navegador.\n\n'
+        + 'Para ligar, cole a URL do App da Web na linha URL_PROGRESSO, no começo do bloco <script> do arquivo.');
+    return;
+  }
+  try{
+    definirSync('salvando');
+    const corpo = corpoBase('ler');
+    await chamarPlanilha(corpo);
+    definirSync('ok');
+    alert('Conexão com a planilha funcionando.\n\nURL: ' + URL_PROGRESSO
+        + '\nUsuário: ' + (usuarioAtual ? usuarioAtual.usuario : '—'));
+  }catch(e){
+    ultimoErroSync = traduzirErro(e);
+    definirSync('erro');
+    alert('Falhou.\n\n' + ultimoErroSync + '\n\nURL: ' + URL_PROGRESSO);
+  }
+}
+
+/* Última tentativa ao fechar a aba, para não perder a marcação recém-feita. */
+window.addEventListener('pagehide', () => {
+  if(!syncLigado() || !usuarioAtual || !syncPendente) return;
+  try{
+    const corpo = corpoBase('salvar');
+    corpo.dados = progresso;
+    navigator.sendBeacon(URL_PROGRESSO, new Blob([JSON.stringify(corpo)], { type:'text/plain;charset=utf-8' }));
+  }catch(e){ /* ignora */ }
+});
+
+
+/* =========================================================
+   ACESSO AO CURSO — lista de usuários
+   ---------------------------------------------------------
+   👉 PARA ADICIONAR, REMOVER OU TROCAR SENHAS, mexa SÓ na
+      lista USUARIOS abaixo. Cada linha é uma pessoa:
+
+        { usuario:'login', senha:'senha', nome:'Nome exibido' },
+
+      · O 'usuario' não diferencia maiúsculas de minúsculas;
+        a 'senha' diferencia (99Mudar01 ≠ 99mudar01).
+      · Todos usam SENHA_PADRAO. Para dar uma senha diferente a
+        alguém, troque SENHA_PADRAO por um texto entre aspas
+        só naquela linha — ex.: senha:'outraSenha123'.
+      · 'nome' é o que aparece no topo depois que a pessoa entra.
+      · Para remover alguém, apague a linha inteira.
+      · Para adicionar, copie uma linha e troque os dados.
+      · A última linha da lista não precisa de vírgula no fim.
+
+   ⚠️ IMPORTANTE: por ser um arquivo HTML, estas senhas ficam
+      dentro da página e podem ser lidas por quem souber abrir
+      o código-fonte do navegador. Isso é uma BARREIRA DE ACESSO
+      (evita que alguém de fora caia no curso por acaso), e não
+      uma proteção de segurança. Não use aqui senhas que você
+      usa em outros sistemas.
+   ========================================================= */
+
+/* 👉 SENHA DO TIME — para trocar a senha de todo mundo de uma vez,
+      basta alterar o texto desta linha. */
+const SENHA_PADRAO = '99Mudar01';
+
+const USUARIOS = [
+  { usuario:'anna.rodrigues',    senha:SENHA_PADRAO, nome:'Anna Rodrigues' },
+  { usuario:'armando.junior',     senha:SENHA_PADRAO, nome:'Armando Junior' },
+  { usuario:'bruno.santos',       senha:SENHA_PADRAO, nome:'Bruno Santos' },
+  { usuario:'carina.souza',       senha:SENHA_PADRAO, nome:'Carina Souza' },
+  { usuario:'carlos.sousa',       senha:SENHA_PADRAO, nome:'Carlos Sousa' },
+  { usuario:'carlos.neto',        senha:SENHA_PADRAO, nome:'Carlos Neto' },
+  { usuario:'cilaine.silva',      senha:SENHA_PADRAO, nome:'Cilaine Silva' },
+  { usuario:'daniel.oliveira',    senha:SENHA_PADRAO, nome:'Daniel Oliveira' },
+  { usuario:'danielle.sardinha',  senha:SENHA_PADRAO, nome:'Danielle Sardinha' },
+  { usuario:'danielle.maciel',    senha:SENHA_PADRAO, nome:'Danielle Maciel' },
+  { usuario:'david.torres',       senha:SENHA_PADRAO, nome:'David Torres' },
+  { usuario:'denis.silva',        senha:SENHA_PADRAO, nome:'Denis Silva' },
+  { usuario:'dianny.veras',       senha:SENHA_PADRAO, nome:'Dianny Veras' },
+  { usuario:'eduarda.abruzzesi',  senha:SENHA_PADRAO, nome:'Eduarda Abruzzesi' },
+  { usuario:'ellen.tavares',      senha:SENHA_PADRAO, nome:'Ellen Tavares' },
+  { usuario:'estefany.almeida',   senha:SENHA_PADRAO, nome:'Estefany Almeida' },
+  { usuario:'everaldo.melo',      senha:SENHA_PADRAO, nome:'Everaldo Melo' },
+  { usuario:'felipe.assumpcao',   senha:SENHA_PADRAO, nome:'Felipe Assumpção' },
+  { usuario:'gabriela.silva',     senha:SENHA_PADRAO, nome:'Gabriela Silva' },
+  { usuario:'gabriella.moraes',   senha:SENHA_PADRAO, nome:'Gabriella Moraes' },
+  { usuario:'gabrielle.maciel',   senha:SENHA_PADRAO, nome:'Gabrielle Maciel' },
+  { usuario:'isaque.rodrigues',   senha:SENHA_PADRAO, nome:'Isaque Rodrigues' },
+  { usuario:'joana.silva',        senha:SENHA_PADRAO, nome:'Joana Silva' },
+  { usuario:'josilaine.paula',    senha:SENHA_PADRAO, nome:'Josilaine Paula' },
+  { usuario:'joao.silva',         senha:SENHA_PADRAO, nome:'João Silva' },
+  { usuario:'kellen.silva',       senha:SENHA_PADRAO, nome:'Kellen Silva' },
+  { usuario:'laiane.pereira',     senha:SENHA_PADRAO, nome:'Laiane Pereira' },
+  { usuario:'larissa.pereira',    senha:SENHA_PADRAO, nome:'Larissa Pereira' },
+  { usuario:'maria.souza',        senha:SENHA_PADRAO, nome:'Maria Souza' },
+  { usuario:'marina.lopes',       senha:SENHA_PADRAO, nome:'Marina Lopes' },
+  { usuario:'naiara.almeida',     senha:SENHA_PADRAO, nome:'Naiara Almeida' },
+  { usuario:'pamela.solange',    senha:SENHA_PADRAO, nome:'Pamela Solange' },
+  { usuario:'paula.minillo',      senha:SENHA_PADRAO, nome:'Paula Minillo' },
+  { usuario:'renata.bacelar',     senha:SENHA_PADRAO, nome:'Renata Bacelar' },
+  { usuario:'sidney.almeida',     senha:SENHA_PADRAO, nome:'Sidney Almeida' },
+  { usuario:'vanessa.viana',      senha:SENHA_PADRAO, nome:'Vanessa Viana' },
+  { usuario:'vanessa.gomes',      senha:SENHA_PADRAO, nome:'Vanessa Gomes' },
+  { usuario:'vania.lespezanu',    senha:SENHA_PADRAO, nome:'Vânia Lespezanu' },
+  { usuario:'veronica.silva',     senha:SENHA_PADRAO, nome:'Verônica Silva' },
+  { usuario:'victor.soares',      senha:SENHA_PADRAO, nome:'Victor Soares' },
+  { usuario:'vinicius.viana',     senha:SENHA_PADRAO, nome:'Vinícius Viana' },
+  { usuario:'wellington.jr',      senha:SENHA_PADRAO, nome:'Wellington Jr.' },
+  { usuario:'convidado',        senha:SENHA_PADRAO, nome:'Convidado' }
+];
+
+/* ---------------------------------------------------------
+   Daqui para baixo é o funcionamento do login — não precisa mexer.
+   --------------------------------------------------------- */
+
+const CHAVE_SESSAO = 'curso-menu-99food-sessao';
+let usuarioAtual = null;
+
+function lerArmazenado(chave){
+  try{ return localStorage.getItem(chave); }catch(e){ return null; }
+}
+function gravarArmazenado(chave, valor){
+  try{ localStorage.setItem(chave, valor); }catch(e){ /* Canva/iframe pode bloquear — segue em memória */ }
+}
+function apagarArmazenado(chave){
+  try{ localStorage.removeItem(chave); }catch(e){ /* ignora */ }
+}
+
+function acharUsuario(login, senha){
+  const u = (login || '').trim().toLowerCase();
+  const s = (senha || '').trim();
+  return USUARIOS.find(x => x.usuario.toLowerCase() === u && x.senha === s) || null;
+}
+function primeiroNome(nome){ return (nome || '').split(' ')[0]; }
+
+function telaLogin(){
+  document.body.classList.add('travado');
+  document.getElementById('chipUsuario').style.display = 'none';
+  document.getElementById('tela').innerHTML =
+      '<div class="cartao cartao-login">'
+    + '<div class="login-topo">'
+    +   '<div class="emoji">🔒</div>'
+    +   '<h1>Curso de Menu</h1>'
+    +   '<p>Conteúdo interno do time de Menu.<br>Entre com o seu usuário para continuar.</p>'
+    + '</div>'
+    + '<div class="login-erro" id="loginErro"></div>'
+    + '<div class="campo"><label for="inpUsuario">Usuário</label>'
+    +   '<input id="inpUsuario" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="seu usuário"></div>'
+    + '<div class="campo"><label for="inpSenha">Senha</label>'
+    +   '<input id="inpSenha" type="password" autocomplete="current-password" placeholder="sua senha"></div>'
+    + '<label class="login-lembrar"><input type="checkbox" id="inpLembrar" checked> Manter conectado neste navegador</label>'
+    + '<button class="btn-entrar" onclick="entrar()">Entrar no curso →</button>'
+    + '<p class="login-rodape">Não tem acesso? Procure o PoC de Menu do seu time.</p>'
+    + '</div>';
+
+  const u = document.getElementById('inpUsuario');
+  const s = document.getElementById('inpSenha');
+  [u,s].forEach(c => c.addEventListener('keydown', e => { if(e.key === 'Enter') entrar(); }));
+  u.focus();
+}
+
+function entrar(){
+  const login = document.getElementById('inpUsuario').value;
+  const senha = document.getElementById('inpSenha').value;
+  const erro  = document.getElementById('loginErro');
+  const achou = acharUsuario(login, senha);
+
+  if(!achou){
+    erro.textContent = 'Usuário ou senha incorretos. Confira e tente de novo.';
+    erro.classList.add('on');
+    document.getElementById('inpSenha').value = '';
+    document.getElementById('inpSenha').focus();
+    return;
+  }
+
+  usuarioAtual = achou;
+  if(document.getElementById('inpLembrar').checked) gravarArmazenado(CHAVE_SESSAO, achou.usuario);
+  else apagarArmazenado(CHAVE_SESSAO);
+  abrirCurso();
+}
+
+function sair(){
+  apagarArmazenado(CHAVE_SESSAO);
+  usuarioAtual = null;
+  if(typeof pintarSync === 'function') pintarSync();
+  atual = 'inicio'; contexto = null; historico.length = 0; quizEstado = null;
+  telaLogin();
+  window.scrollTo({top:0});
+}
+
+function abrirCurso(){
+  document.body.classList.remove('travado');
+  document.getElementById('chipUsuario').style.display = 'flex';
+  document.getElementById('nomeUsuario').textContent = 'Oi, ' + primeiroNome(usuarioAtual.nome);
+  document.getElementById('chipUsuario').title = usuarioAtual.nome + ' · ' + usuarioAtual.usuario;
+  carregarProgresso();
+  atual = 'inicio'; contexto = null; historico.length = 0;
+  render();
+  if(typeof sincronizarEntrada === 'function'){ pintarSync(); sincronizarEntrada(); }
+  window.scrollTo({top:0});
+}
+
+function iniciarApp(){
+  const salvo = lerArmazenado(CHAVE_SESSAO);
+  const achou = salvo ? USUARIOS.find(x => x.usuario.toLowerCase() === salvo.toLowerCase()) : null;
+  if(achou){ usuarioAtual = achou; abrirCurso(); }
+  else telaLogin();
+}
+
+
+/* =========================================================
+   CURSO DE MENU · 99Food
+   Estrutura: MODULOS → AULAS → CHECKPOINTS → PROVA FINAL
+   Para editar o curso, mexa nestas listas.
+   ========================================================= */
+
+const MODULOS = [
+  { id:'m1',  icone:'📖', titulo:'Fundamentos do Menu',
+    resumo:'O que é cada tipo de cardápio, quem é responsável por ele e onde consultar essa informação.',
+    aulas:['a1_1','a1_2','a1_3'], checkpoint:'cp1' },
+
+  { id:'m2',  icone:'🛠️', titulo:'Criando o cardápio da marca',
+    resumo:'As três etapas no Gattaran: criar o cardápio, deixar os itens disponíveis e aplicar o menu na marca.',
+    aulas:['a2_1','a2_2','a2_3'], checkpoint:'cp2' },
+
+  { id:'m3',  icone:'🔄', titulo:'Sincronização do menu',
+    resumo:'Os três métodos de sincronização, o caminho do RTBO pela coluna AK e o que fazer quando os itens vêm indisponíveis.',
+    aulas:['a3_1','a3_2','a3_3','a3_4','a3_5'], checkpoint:'cp3' },
+
+  { id:'m4',  icone:'🍰', titulo:'Itens, grupos e edição',
+    resumo:'Criar itens na biblioteca, vincular ao cardápio, código PDV, grupos de itens adicionais e as regras de edição.',
+    aulas:['a4_1','a4_2','a4_3','a4_4','a4_5','a4_6'], checkpoint:'cp4' },
+
+  { id:'m5',  icone:'📊', titulo:'Benchmarking',
+    resumo:'Comparação de preços 99 × iFood: paridade por signatário, criação do bench, conferência e bench de nível loja.',
+    aulas:['a5_1','a5_2','a5_3','a5_4','a5_5','a5_6','a5_7'], checkpoint:'cp5' },
+
+  { id:'m6',  icone:'📸', titulo:'PIC Coverage',
+    resumo:'A demanda de revisão de menu com foco em fotos: meta de 98%, análise, planilha e conclusão da task.',
+    aulas:['a6_1','a6_2','a6_3','a6_4','a6_5'], checkpoint:'cp6' },
+
+  { id:'m7',  icone:'🔎', titulo:'Query Review & Common Tags',
+    resumo:'Intenção de busca, classificação KA/CKA, nome padrão da marca e cadastro das tags no Gattaran.',
+    aulas:['a7_1','a7_2','a7_3','a7_4','a7_5'], checkpoint:'cp7' },
+
+  { id:'m8',  icone:'📥', titulo:'Demandas que chegam do cliente',
+    resumo:'Tasks de criação de menu pedidas no 99Admin e envio do cardápio físico de balcão.',
+    aulas:['a8_1','a8_2'], checkpoint:'cp8' },
+
+  { id:'m10', icone:'🕵️', titulo:'Auditorias e aprovações',
+    resumo:'As filas de aprovação para leads KA: leads duplicados e contratos não padronizados.',
+    aulas:['a10_1','a10_2','a10_3'], checkpoint:'cp10' },
+
+  { id:'m11', icone:'⭐', titulo:'Erros, dicas e curiosidades',
+    resumo:'Os tropeços mais comuns do dia a dia e as perguntas que sempre voltam.',
+    aulas:['a11_1','a11_2'], checkpoint:'cp11' }
+];
+
+const AULAS = {
+
+/* ===================== MÓDULO 1 ===================== */
+a1_1: {
+  titulo:'Nível Marca × Nível Loja',
+  objetivo:'Saber diferenciar os dois tipos de cardápio e reconhecer qual deles usar.',
+  blocos:[
+    { t:'texto', v:'Todo cardápio no Gattaran existe em um de dois níveis. A escolha do nível define quem consegue editar o menu e como ele chega às lojas.' },
+    { t:'figura', v:'niveis', legenda:'No nível marca, um único cardápio alimenta todas as lojas. No nível loja, cada uma tem o seu — e manter todas alinhadas vira trabalho manual.' },
+    { t:'duo', v:[
+      { h:'🏢 Nível Marca', p:[
+        '<strong>O que é?</strong> Cardápio centralizado e criado na Marca, servindo como base para todas as lojas.',
+        '<strong>Quando usar?</strong> Sempre — garante controle, padronização e evita problemas de sincronização.',
+        '<strong>Quem acessa?</strong> Superadmins e gerentes de cada marca, além dos 2nd party.'
+      ]},
+      { h:'🏪 Nível Loja', p:[
+        '<strong>O que é?</strong> Cardápio criado ou personalizado individualmente em cada loja.',
+        '<strong>Quando usar?</strong> Muito específico: quando há 1 loja da marca com características diferenciadas.',
+        '<strong>Quem acessa?</strong> Superadmins e gerentes de cada loja.'
+      ]}
+    ]},
+    { t:'atencao', titulo:'Regra prática', v:'Prefira <strong>sempre</strong> o menu de Nível Marca. O Nível Loja é exceção — só para casos muito específicos, porque causa problemas na sincronização e dificulta a gestão de múltiplas lojas.' }
+  ]
+},
+
+a1_2: {
+  titulo:'Quem é o responsável pelo menu',
+  objetivo:'Identificar, diante de uma marca, se a equipe atua no menu e em qual etapa.',
+  blocos:[
+    { t:'texto', v:'São quatro situações possíveis, divididas em dois grupos: as em que <strong>a marca faz</strong> o menu e as em que <strong>nós somos responsáveis</strong>.' },
+    { t:'texto', v:'<strong>Situações em que a marca faz o menu</strong>' },
+    { t:'passos', lista:true, v:[
+      '<strong>Menu que vem por integração:</strong> a marca faz todo o processo, com base em um menu já existente. É a marca quem coloca todos os itens no cardápio, com preços, fotos, descrições, códigos etc. Nesse tipo, <strong>nossa equipe não atua em nada</strong>.',
+      '<strong>Menu feito pela marca:</strong> a marca faz o menu, podendo usar link do iFood ou criar item a item. Nesse tipo, <strong>nossa equipe atua sincronizando as lojas</strong> no menu criado na marca (desde que essa informação esteja na planilha).'
+    ]},
+    { t:'texto', v:'<strong>Situações em que nós somos responsáveis</strong>' },
+    { t:'passos', lista:true, v:[
+      '<strong>Menu que criamos e subimos na marca:</strong> fazemos o processo de criar o benchmarking e depois puxar esse menu para a marca. Depois, também pode haver a etapa de sincronizar as lojas da marca nesse menu.',
+      '<strong>Menu que já criamos e já está na marca:</strong> a grande maioria das marcas já possui menu criado. Esse menu é usado para todas as demais lojas através do processo de sincronização.'
+    ]}
+  ]
+},
+
+a1_3: {
+  titulo:'Onde consultar o tipo de menu da loja',
+  objetivo:'Saber em qual planilha e coluna checar se o menu é integrado, sincronizado ou feito do zero.',
+  blocos:[
+    { t:'texto', v:'Antes de atuar, confirme sempre <strong>que tipo de menu aquela loja tem</strong>. É essa informação que define se você precisa criar, sincronizar ou não fazer nada.' },
+    { t:'passos', lista:true, v:[
+      '<strong>Planilha de Sign-Up e RTBO — colunas AK a AN:</strong> indicam se o menu é integrado, sincronizado ou feito do zero.',
+      '<strong>Coluna AK — Template Name:</strong> o nome do cardápio que deve ser sincronizado na loja (usado no RTBO quando a marca não tem menu integrado).',
+      '<strong>Planilha "Store - menu API or NO" — coluna E:</strong> indica se a loja tem menu de <strong>nível marca</strong> (sincronizado), de <strong>nível loja</strong> ou <strong>integrado</strong>.'
+    ]},
+    { t:'atencao', titulo:'Menu integrado', v:'Em menu integrado <strong>não há ação da nossa equipe</strong> sobre o cardápio. Nas demandas de revisão (PIC Coverage), basta realizar a análise e preencher a planilha.' }
+  ]
+},
+
+/* ===================== MÓDULO 2 ===================== */
+a2_1: {
+  titulo:'Criando o cardápio da marca no Gattaran',
+  objetivo:'Executar a 1ª etapa: gerar o cardápio a partir de um link, aplicar o desconto e publicar.',
+  blocos:[
+    { t:'texto', v:'A criação de menu de marca tem <strong>três etapas</strong>: 1) criação de um cardápio a partir de um ID da marca; 2) afiliação do menu criado na marca; 3) sincronização do menu nas lojas da marca. Ferramentas necessárias: <strong>Gattaran</strong> e o <strong>link com a base</strong> onde o menu será criado.' },
+    { t:'figura', v:'etapas', legenda:'O caminho completo. Esta aula cobre a etapa 1; as outras duas vêm nas aulas seguintes.' },
+    { t:'caminho', v:'<b>Estabelecimento</b> → <b>CRM</b> → <b>Lista de leads</b>' },
+    { t:'passos', v:[
+      'Na página inicial do Gattaran, acesse o campo de busca dos estabelecimentos. <strong>O estabelecimento precisa ser da marca em que você irá criar o cardápio.</strong>',
+      'Busque um estabelecimento da marca para ser a <strong>base de criação</strong>: coloque o <strong>ID do estabelecimento</strong>, clique em <strong>Busca</strong> e depois em <strong>Ver</strong>.',
+      'Na página da loja, clique na aba <strong>Operar</strong> e depois em <strong>"Inicializar menu (nova versão)"</strong>.',
+      'Clique em <strong>"Gerenciar cardápio de referência"</strong>.',
+      'Vá na aba <strong>"Cardápio de referência de outra plataforma"</strong> e clique em <strong>"Copiar cardápio de outra plataforma"</strong> → Selecionar.',
+      'Dê <strong>dois a três cliques no nome do estabelecimento</strong>, cole o <strong>link disponibilizado</strong> para criação do menu e clique em <strong>Enviar</strong>. Aguarde carregar os dados do menu.',
+      'Após carregar, clique em <strong>"Gerar cardápio de referência"</strong> e em <strong>Confirmar</strong>. Aguarde enquanto o sistema cria o menu — <strong>não feche nem atualize a página</strong>.',
+      'Insira o <strong>percentual de desconto indicado na planilha/tracker</strong> (Direção de ajuste: <strong>Redução</strong>) e clique em <strong>"Gerar cardápio online"</strong> → confirme. Assim, todos os itens serão criados no valor necessário.',
+      'Por fim, <strong>publique o menu</strong> clicando em <strong>Lançamento</strong>.'
+    ]},
+    { t:'atencao', titulo:'Sempre publique o menu!', v:'Todos os menus que criamos — seja na <strong>loja</strong> ou na <strong>marca</strong> — precisam ser <strong>publicados para ativar o Bench</strong>. Sem a publicação (Lançamento), o menu não fica ativo e a comparação de preços não é iniciada. Confira se o menu ficou com o status <strong>"Publicado"</strong>.' }
+  ]
+},
+
+a2_2: {
+  titulo:'Deixando todos os itens disponíveis',
+  objetivo:'Usar a ação em lote para disponibilizar para venda os itens recém-criados.',
+  blocos:[
+    { t:'texto', v:'Após concluir a criação, volte à página inicial do estabelecimento e deixe todos os itens criados <strong>disponíveis para venda</strong>.' },
+    { t:'caminho', v:'Página do estabelecimento → <b>Operar</b> → <b>Gerenciar itens do menu</b>' },
+    { t:'passos', v:[
+      'Na tela do <strong>cardápio online</strong> do estabelecimento, utilize a <strong>ação em lote</strong>: clique em ação em lote e depois em <strong>selecionar tudo</strong>.',
+      'Clique em <strong>"Marcar como disponível"</strong>.',
+      'O limite da ação em lote é de <strong>50 itens</strong> — se o cardápio tiver mais do que isso, vá fazendo de 50 em 50.'
+    ]},
+    { t:'atencao', titulo:'Dica', v:'Antes de começar, use o filtro de <strong>Status do item</strong> para ver só os que estão indisponíveis — assim você acompanha o progresso conforme for deixando os itens disponíveis.' }
+  ]
+},
+
+a2_3: {
+  titulo:'Aplicando o menu na marca',
+  objetivo:'Executar a 2ª etapa: gerar itens e cardápio na marca a partir do menu criado.',
+  blocos:[
+    { t:'texto', v:'Com o menu criado a partir do link, pegamos esse menu e aplicamos na marca, para que ele sirva de cardápio para <strong>todos os estabelecimentos da mesma marca</strong>. Para isso, volte à página inicial do Gattaran.' },
+    { t:'caminho', v:'<b>Estabelecimento</b> → <b>Gerenciar itens do menu</b> → <b>Gerenciamento de itens de marca</b>' },
+    { t:'passos', v:[
+      'Digite o <strong>nome da marca</strong>, <strong>clique em cima dela para selecionar</strong> e clique em <strong>Entrar</strong>. Se não clicar em cima para selecionar, você não conseguirá abrir.',
+      'Na página "Menu da marca", clique na aba <strong>Cardápio</strong>.',
+      'Clique em <strong>Mais funções</strong> → <strong>"Gerar itens e cardápio"</strong> → <strong>Confirmar</strong>.',
+      'Aguarde: esse processo pode levar de <strong>três a cinco minutos</strong>.',
+      'Quando o menu for criado, todos os itens irão aparecer em <strong>Biblioteca de itens</strong>.',
+      'Garanta que todos os itens estejam <strong>com foto</strong> e <strong>marcados como disponível</strong>.'
+    ]},
+    { t:'atencao', titulo:'Atenção', v:'Marcas com <strong>"ABANDON"</strong> ao lado estão desativadas e não podemos utilizá-las. Além disso, <strong>não pode ter nenhum cardápio, item ou grupo de itens adicionais já criado na marca</strong> para gerar itens e cardápio.' }
+  ]
+},
+
+/* ===================== MÓDULO 3 ===================== */
+a3_1: {
+  titulo:'Os três métodos de sincronização',
+  objetivo:'Reconhecer qual dos três métodos da tela de sincronização usar em cada situação.',
+  blocos:[
+    { t:'texto', v:'A 3ª etapa é levar o menu da marca até os estabelecimentos. A tela do GTR oferece <strong>três métodos</strong> — a escolha depende do que você precisa enviar.' },
+    { t:'figura', v:'metodos', legenda:'O que cada método leva até a loja. Em destaque, a parte do cardápio que é enviada.' },
+    { t:'caminho', v:'Menu da marca → aba <b>Cardápio</b> → <b>Sincronizar</b>' },
+    { t:'tabela', cab:['Método','Quando usar'], v:[
+      ['Abrir uma nova loja/Alterar menu','Envia <strong>todo o menu da marca</strong> para as lojas selecionadas. É o método usado <strong>sempre no RTBO</strong>.'],
+      ['Adicionar categorias/Atualizar categorias','Envia as <strong>categorias selecionadas e todos os seus itens</strong>. A loja atualiza as categorias existentes ou adiciona as novas.'],
+      ['Adicionar novos itens/Atualizar itens','Envia <strong>apenas os itens selecionados</strong>. Se a loja já tiver o item, ele é atualizado; se não, é adicionado.']
+    ]},
+    { t:'atencao', titulo:'Pré-requisito dos três métodos', v:'Os estabelecimentos precisam ser <strong>da mesma marca</strong> e estar <strong>afiliados a ela</strong> — sem isso, não é possível enviar. Acompanhe o andamento em <strong>Mais funções → "Tarefa em andamento"</strong>; é ali que aparece se algo deu errado.' }
+  ]
+},
+
+a3_2: {
+  titulo:'Sincronizando o menu durante o RTBO',
+  objetivo:'Sincronizar o cardápio correto de uma loja em RTBO usando a coluna AK da planilha.',
+  blocos:[
+    { t:'texto', v:'Durante o RTBO, quando a marca <strong>não tem menu integrado</strong>, devemos sincronizar o menu da loja. O nome do cardápio correto vem da planilha, na coluna <strong>AK — "Template Name"</strong>.' },
+    { t:'caminho', v:'<b>Estabelecimento</b> → <b>Gerenciar itens do menu</b> → <b>Gerenciamento de itens de marca</b>' },
+    { t:'passos', v:[
+      'Consulte a <strong>planilha da loja</strong> da qual está fazendo o RTBO: vá na coluna <strong>"AK" — Template Name</strong> e verifique <strong>qual o nome do cardápio</strong> que deve ser sincronizado.',
+      'Volte ao GTR pelo caminho acima, busque pelo <strong>nome da marca</strong> da loja do RTBO e clique em <strong>Entrar</strong>.',
+      'Vá na aba <strong>Cardápios</strong> e localize o cardápio com o <strong>mesmo nome que apareceu na coluna AK</strong>.',
+      'Na linha do cardápio, clique na opção em laranja <strong>Sincronizar</strong>.',
+      'Em "Selecione o método de sincronização", escolha a <strong>primeira opção: "Abrir uma nova loja/Alterar menu"</strong> — no RTBO é sempre ela — e clique em <strong>"Atualizar agora"</strong>.',
+      'Selecione <strong>"Adicionar IDs da loja"</strong> e <strong>cole o ID da sua loja</strong>.',
+      'Na última seleção — sobre o método de criação de cardápio — selecione a opção <strong>"Outros"</strong>.',
+      'Por fim, clique em <strong>Enviar</strong>.'
+    ]},
+    { t:'atencao', titulo:'Importante', v:'O nome do cardápio no GTR precisa ser <strong>exatamente o mesmo</strong> da coluna AK (Template Name). Garanta também que a loja esteja <strong>afiliada à marca</strong>, ou não será possível enviar.' }
+  ]
+},
+
+a3_3: {
+  titulo:'Sincronizar o menu inteiro',
+  objetivo:'Enviar todo o cardápio da marca para um conjunto de lojas.',
+  blocos:[
+    { t:'caminho', v:'Menu da marca → aba <b>Cardápio</b> → <b>Sincronizar</b> → método <b>"Abrir uma nova loja/Alterar menu"</b>' },
+    { t:'passos', v:[
+      'Em "Selecione o método de sincronização", escolha <strong>"Abrir uma nova loja/Alterar menu"</strong> e clique em <strong>"Atualizar agora"</strong>.',
+      'Em "Selecione o canal com o qual sincronizar o menu", mantenha <strong>99Food</strong>.',
+      'Em "Selecione a loja-alvo", clique em <strong>"Adicionar IDs do estabelecimento"</strong> e insira os IDs.',
+      'Em "Definir a disponibilidade do item", mantenha <strong>"Com base na disponibilidade atual de itens no estabelecimento"</strong> — se o estabelecimento já tiver o item, a disponibilidade atual permanece inalterada.',
+      'Em "Definir horário de sincronização do cardápio", mantenha <strong>"Sincronizar agora"</strong>.',
+      'Em "Base de criação do cardápio", clique em <strong>"Outros"</strong>.',
+      'Clique em <strong>Enviar</strong> e depois em <strong>Confirmar</strong> na mensagem "Enviar tarefa".',
+      'Quando for sincronizado em todos os IDs enviados, a quantidade aparecerá na coluna <strong>"Lojas sincronizadas"</strong>.'
+    ]}
+  ]
+},
+
+a3_4: {
+  titulo:'Sincronizar categorias ou itens específicos',
+  objetivo:'Enviar apenas parte do cardápio — categorias inteiras ou itens avulsos.',
+  blocos:[
+    { t:'texto', v:'Os dois métodos parciais seguem a mesma sequência de telas do método completo. A diferença está <strong>no que você seleciona logo no começo</strong>.' },
+    { t:'texto', v:'<strong>🗂️ Categorias específicas</strong>' },
+    { t:'caminho', v:'Sincronizar → método <b>"Adicionar categorias/Atualizar categorias"</b>' },
+    { t:'passos', v:[
+      'Escolha <strong>"Adicionar categorias/Atualizar categorias"</strong> e clique em <strong>"Atualizar agora"</strong>.',
+      'Selecione as <strong>categorias</strong> que deseja enviar e confirme — vão a categoria e todos os seus itens.',
+      'Siga as demais telas: canal <strong>99Food</strong> → <strong>"Adicionar IDs do estabelecimento"</strong> → disponibilidade <strong>"Com base na disponibilidade atual"</strong> → <strong>"Sincronizar agora"</strong> → base <strong>"Outros"</strong>.',
+      'Clique em <strong>Enviar</strong> e depois em <strong>Confirmar</strong>.'
+    ]},
+    { t:'texto', v:'<strong>🍔 Apenas itens específicos</strong>' },
+    { t:'caminho', v:'Sincronizar → método <b>"Adicionar novos itens/Atualizar itens"</b>' },
+    { t:'passos', v:[
+      'Escolha <strong>"Adicionar novos itens/Atualizar itens"</strong> e clique em <strong>"Atualizar agora"</strong>.',
+      'Clique em <strong>"+ Selecione o(s) item(ns) de destino"</strong> e escolha os itens — dá para entrar pelas categorias, pesquisar por nome e selecionar todos. Clique em <strong>Confirmar</strong>.',
+      'Siga as demais telas da mesma forma e finalize em <strong>Enviar</strong> → <strong>Confirmar</strong>.'
+    ]},
+    { t:'atencao', titulo:'Importante', v:'Em qualquer um dos métodos, garanta que os estabelecimentos sejam <strong>da mesma marca</strong> e que todos estejam <strong>afiliados na marca</strong>. Acompanhe em <strong>Mais funções → "Tarefa em andamento"</strong>.' }
+  ]
+},
+
+a3_5: {
+  titulo:'RTBO travado: menu sincronizado com itens indisponíveis',
+  objetivo:'Destravar um RTBO em que só o menu ficou pendente porque os itens vieram indisponíveis.',
+  blocos:[
+    { t:'texto', v:'Cenário: a loja <strong>já tem o menu sincronizado</strong>, mas o RTBO não fecha — fica pendente <strong>apenas o menu</strong>. Isso acontece porque os itens vieram <strong>indisponíveis</strong>. Na aba "Operar", o item <strong>"Número de itens"</strong> da lista de verificação de RTBO aparece em <strong>vermelho claro</strong>.' },
+    { t:'passos', v:[
+      'No GTR, na aba <strong>"Operar"</strong>, clique sobre <strong>"Número de itens"</strong> (em vermelho claro) — você será direcionado ao <strong>99Admin</strong>, na tela "Gerenciar itens do cardápio".',
+      'Na aba <strong>"Cardápio online"</strong>, clique em <strong>"Categoria"</strong> e selecione a opção <strong>"Tudo"</strong>.',
+      'Ainda na mesma aba, clique em <strong>"Status do item"</strong> e selecione <strong>"Indisponível"</strong> — aparecerão todas as categorias e itens indisponíveis.',
+      'Clique em <strong>"Seleção em lote"</strong> e, abaixo da palavra "Selecionado" (em amarelo), marque a caixa <strong>"Itens"</strong> para selecionar todos os itens daquela categoria.',
+      'Clique em <strong>"Marcar como disponível"</strong>.',
+      'Repita para <strong>todas as categorias</strong> do menu.'
+    ]},
+    { t:'atencao', titulo:'Pronto!', v:'Com todos os itens marcados como disponíveis, o <strong>RTBO fica completo</strong> e o item "Número de itens" deixa de ficar pendente. Confira na aba Operar se a lista de verificação ficou concluída.' }
+  ]
+},
+
+/* ===================== MÓDULO 4 ===================== */
+a4_1: {
+  titulo:'Criando itens na marca',
+  objetivo:'Cadastrar um item novo na biblioteca de itens da marca.',
+  blocos:[
+    { t:'texto', v:'Os itens são criados na <strong>Biblioteca de itens</strong> da marca. Só depois eles são vinculados a um cardápio.' },
+    { t:'caminho', v:'Menu da marca → aba <b>Biblioteca de itens</b> → <b>+ Adicionar</b>' },
+    { t:'passos', v:[
+      'Clique em <strong>+ Adicionar</strong>.',
+      'Em Tipo de item, utilize <strong>SEMPRE "item único"</strong>.',
+      'Preencha todas as informações: <strong>Nome</strong>, <strong>Foto</strong>, <strong>Código PDV</strong>, <strong>Categoria do item</strong>, <strong>Valor (Preço)</strong>, inclusão de <strong>grupos adicionais</strong> e as <strong>regras dos itens</strong> (contém álcool?, pode ser vendido separadamente?, horário de venda).',
+      'Ao final, clique em <strong>Enviar</strong>.'
+    ]}
+  ]
+},
+
+a4_2: {
+  titulo:'Vinculando o item ao cardápio',
+  objetivo:'Colocar no cardápio um item que já existe na biblioteca.',
+  blocos:[
+    { t:'texto', v:'Criar o item não o coloca no cardápio — são duas coisas diferentes. Depois de criado, ele precisa ser vinculado a uma categoria do cardápio.' },
+    { t:'caminho', v:'Menu da marca → aba <b>Cardápio</b> → <b>Editar</b>' },
+    { t:'passos', v:[
+      'Na aba <strong>Cardápio</strong>, localize o cardápio desejado e clique em <strong>Editar</strong>.',
+      'Crie uma <strong>nova categoria</strong> ou selecione uma existente e clique em <strong>+ Adicionar item</strong>.',
+      'No pop-up, <strong>selecione os itens</strong> que devem estar em cada categoria do cardápio e clique em <strong>Confirmar</strong>.'
+    ]}
+  ]
+},
+
+a4_3: {
+  titulo:'Código PDV',
+  objetivo:'Entender para que serve o código PDV e saber inseri-lo nos itens.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      'O PDV é um <strong>código identificador único</strong>, para cada item do cardápio.',
+      'É utilizado para <strong>integrar o cardápio criado pela 99</strong> com o sistema de gestão do restaurante.',
+      'Quando a loja precisa do código, costuma abrir task solicitando a inclusão, enviando os códigos e itens consolidados em planilha.'
+    ]},
+    { t:'texto', v:'<strong>Como inserir o código PDV nos itens:</strong>' },
+    { t:'caminho', v:'Menu da marca → aba <b>Biblioteca de itens</b> → localizar o item → <b>Editar</b>' },
+    { t:'passos', v:[
+      'Na Biblioteca de itens, localize o item e clique em <strong>Editar</strong>.',
+      'No campo <strong>Código PDV</strong>, insira o código.',
+      'Role até o final e clique em <strong>Enviar</strong>.'
+    ]}
+  ]
+},
+
+a4_4: {
+  titulo:'Criando grupos de itens adicionais',
+  objetivo:'Montar um grupo de adicionais e entender cada campo da tela.',
+  blocos:[
+    { t:'atencao', titulo:'Antes de começar', v:'Para um item existir <strong>dentro de um grupo</strong>, ele precisa <strong>já existir como item individual</strong>. Primeiro cria-se o item, depois vincula-se ao grupo.' },
+    { t:'figura', v:'grupos', legenda:'Como as peças se encaixam — e por que alterar o preço direto no item não resolve: o valor que o cliente vê vem do grupo.' },
+    { t:'caminho', v:'Menu da marca → aba <b>Biblioteca de itens</b> → <b>Grupos de itens adicionais</b> → <b>+ Adicionar</b>' },
+    { t:'passos', v:[
+      'Na Biblioteca de itens, clique em <strong>Grupos de itens adicionais</strong> e depois em <strong>+ Adicionar</strong>.',
+      '<strong>Nome do grupo de itens adicionais:</strong> o nome do grupo.',
+      '<strong>ID do grupo personalizado:</strong> o código PDV do grupo, caso tenha.',
+      '<strong>Item adicional:</strong> clique em <strong>+ Incluir item adicional</strong>, selecione o(s) item(ns) e clique em <strong>Confirmar</strong>.',
+      '<strong>Intervalo da quantidade total:</strong> define o limite de itens para compra.',
+      '<strong>Obrigatório?</strong> define a obrigatoriedade do grupo.',
+      '<strong>O cliente pode comprar o mesmo item mais de uma vez:</strong> define a regra para o limite dos itens.',
+      'Clique em <strong>Enviar</strong>.'
+    ]}
+  ]
+},
+
+a4_5: {
+  titulo:'Vinculando o grupo ao item principal',
+  objetivo:'Ligar um grupo de adicionais ao item a que ele pertence.',
+  blocos:[
+    { t:'texto', v:'Para colocar o grupo dentro do item ao qual ele pertence, precisamos estar dentro do <strong>cardápio</strong> — e não na biblioteca.' },
+    { t:'caminho', v:'Menu da marca → aba <b>Cardápio</b> → <b>Editar</b> → localizar o item → <b>Editar</b>' },
+    { t:'passos', v:[
+      'Na aba Cardápio, clique em <strong>Editar</strong>. Dentro do cardápio, encontre o item ao qual será adicionado o grupo e clique em <strong>Editar</strong>.',
+      'Na tela do item, clique em <strong>+ Adicionar grupo de itens adicionais</strong>.',
+      'Selecione os <strong>grupos de itens</strong> que devem pertencer ao item principal e clique em <strong>Confirmar</strong>.',
+      'Ao voltar para a tela do item principal, confira todos os grupos adicionados e clique em <strong>Enviar</strong> para finalizar.'
+    ]}
+  ]
+},
+
+a4_6: {
+  titulo:'Editando itens e grupos',
+  objetivo:'Fazer edições no lugar certo — principalmente de preço de adicionais.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      '<strong>Sempre que fizer edições</strong>, reabra o item editado e confirme se ficou salvo.',
+      'Para <strong>editar valor de itens que fazem parte de grupos adicionais</strong>, é preciso editar pelo grupo e não apenas no item.',
+      'Para <strong>substituir grupos</strong> já vinculados aos itens, faça o processo de "apagar, salvar, adicionar e salvar".'
+    ]},
+    { t:'texto', v:'<strong>Como editar itens:</strong>' },
+    { t:'caminho', v:'Menu da marca → aba <b>Biblioteca de itens</b> → localizar o item → <b>Editar</b>' },
+    { t:'passos', v:[
+      'Na Biblioteca de itens, localize o item (busque pelo nome exato ou por palavras-chave) e clique em <strong>Editar</strong>.',
+      'Ajuste as informações necessárias (nome, código PDV, categoria, foto, descrição, grupos adicionais, preço etc.).',
+      'Ao finalizar, clique em <strong>Enviar</strong>.'
+    ]},
+    { t:'texto', v:'<strong>Como editar grupos de itens adicionais:</strong>' },
+    { t:'caminho', v:'Menu da marca → aba <b>Biblioteca de itens</b> → <b>Grupos de itens adicionais</b> → localizar o grupo → <b>Editar</b>' },
+    { t:'passos', v:[
+      'Na Biblioteca de itens, clique em <strong>Grupos de itens adicionais</strong>.',
+      'Localize o grupo — é possível <strong>buscar pelo nome exato</strong> ou usar <strong>palavras-chave</strong>.',
+      'Na linha do grupo, clique em <strong>Editar</strong>.',
+      'Ajuste <strong>tudo que for necessário</strong> (nome, ID personalizado, itens adicionais e seus valores, intervalo de quantidade, obrigatoriedade, regra de compra do mesmo item etc.).',
+      'Ao final, clique em <strong>Enviar</strong>.'
+    ]},
+    { t:'atencao', titulo:'O que a tela do grupo permite', v:'Na tela de edição do grupo podemos: <strong>encontrar todos os itens que utilizam esse grupo adicional</strong> (seção "Itens que usam esse grupo de itens adicionais"); fazer as <strong>edições de itens que fazem parte do grupo</strong> — é aqui que elas devem ser feitas; e <strong>modificar as regras do grupo</strong>.' }
+  ]
+},
+
+/* ===================== MÓDULO 5 ===================== */
+a5_1: {
+  titulo:'O que é benchmarking',
+  objetivo:'Entender o que o bench compara, por que ele existe e onde achar a % de desconto.',
+  blocos:[
+    { t:'figura', v:'bench', legenda:'O bench compara o preço na 99 com o do iFood da mesma marca. Passando do desconto acordado, o item para de vender até ser ajustado.' },
+    { t:'passos', lista:true, v:[
+      '<strong>O que é?</strong> É a comparação automática de preços entre o cardápio da <strong>99</strong> e o cardápio do <strong>iFood</strong> da mesma marca.',
+      '<strong>Por onde é feito?</strong> No <strong>GTR</strong>, dentro do <strong>menu da marca ou no menu da loja</strong>, utilizando um link iFood como base. É criado um bench para cada menu dentro da marca.',
+      '<strong>% de desconto:</strong> para saber qual é o desconto acordado com a marca, procure a % na <strong>planilha de Sign-Up e RTBO</strong> (<a href="https://drive.google.com/drive/folders/0AI-qO995OmW1Uk9PVA?role=writer" target="_blank" rel="noopener">drive das planilhas ↗</a>).',
+      '<strong>Qual o objetivo?</strong> Garantir que a loja mantenha os preços na 99 de acordo com o desconto combinado em relação ao iFood. O item pode ficar <strong>bloqueado para venda automaticamente</strong>, até que o preço seja ajustado.'
+    ]}
+  ]
+},
+
+a5_2: {
+  titulo:'1º passo: paridade por signatário',
+  objetivo:'Preencher e enviar a planilha de regra de paridade antes de criar o bench.',
+  blocos:[
+    { t:'texto', v:'Fluxo para <strong>lojas que utilizam cardápio de marca</strong>. Antes de iniciar a criação do bench, criamos a <strong>regra de paridade por signatários</strong>.' },
+    { t:'caminho', v:'<b>Estabelecimento</b> → <b>Gerenciar itens do menu</b> → <b>Regras de Controle de Preço de Item</b>' },
+    { t:'passos', v:[
+      'Na aba <strong>"Adicionar em Lote Configurações Especiais de Signatários"</strong>, clique em <strong>Baixar modelo</strong>.',
+      'Preencha a planilha: na coluna <strong>"A"</strong>, o <strong>ID do signatário</strong>.',
+      'As colunas <strong>"B" e "C"</strong> são padrão: preencha <strong>sempre com "50"</strong>.',
+      'Nas colunas <strong>"D" e "E"</strong>, preencha com a <strong>% de desconto</strong> para a marca.',
+      'Em "Enviar arquivo", <strong>anexe a planilha</strong> preenchida e clique em <strong>Enviar</strong>.',
+      'Pronto: a regra fica <strong>ativa e pronta</strong> para a comparação de preços.'
+    ]},
+    { t:'atencao', titulo:'Sobre a planilha', v:'A planilha vem pronta, com o modelo que o GTR aceita — você deve <strong>apenas preencher os dados</strong>. Ao inserir o ID do signatário, será necessário <strong>formatar a linha para texto</strong>.' }
+  ]
+},
+
+a5_3: {
+  titulo:'2º passo: criando o menu benchmarking',
+  objetivo:'Gerar o cardápio de referência que servirá de base de comparação.',
+  blocos:[
+    { t:'texto', v:'Nesta etapa criamos o menu que servirá de <strong>base de comparação de preços</strong>. Precisaremos pegar um ID que está dentro do menu, nas lojas sincronizadas, e procurar no iFood aquela loja para utilizarmos o link.' },
+    { t:'caminho', v:'<b>Estabelecimento</b> → <b>Gerenciar itens do menu</b> → <b>Gerenciamento de itens de marca</b>' },
+    { t:'passos', v:[
+      'Digite a <strong>marca</strong>, clique em cima dela para selecionar e clique em <strong>Entrar</strong>.',
+      'Na página "Menu da marca", clique na aba <strong>Cardápio</strong>.',
+      'Clique no número da coluna <strong>"Lojas sincronizadas"</strong> para ver as lojas do menu.',
+      'Pegue como exemplo a <strong>primeira loja</strong> da lista: procure o <strong>link iFood</strong> dela e copie. Copie também o <strong>ID da loja</strong>, pois depois iremos checar o andamento.',
+      'De volta à visualização de cardápio, na coluna <strong>"Menu de referência"</strong>, clique em <strong>Gerenciar</strong>.',
+      'Clique na aba <strong>"Cardápio de referência de outra plataforma"</strong> e escolha <strong>"Copiar cardápio de outra plataforma"</strong>.',
+      'Na janela "Inicializar cardápio", <strong>cole o link iFood</strong> da loja escolhida e clique em <strong>Enviar</strong>.',
+      'Clique em <strong>"Gerar cardápio de referência"</strong> e <strong>confirme</strong> — pode levar alguns minutos.',
+      'Garanta que <strong>todas as categorias e itens foram criados com nomes e valores</strong>.',
+      'Após validar todos os itens, clique em <strong>Lançamento</strong>.'
+    ]},
+    { t:'atencao', titulo:'Ao lançar', v:'O menu benchmark será <strong>publicado e ficará ativo</strong>, iniciando a comparação dos valores.' }
+  ]
+},
+
+a5_4: {
+  titulo:'3º passo: conferindo a publicação',
+  objetivo:'Validar dentro da loja que o bench ficou publicado e ativo.',
+  blocos:[
+    { t:'texto', v:'Após a criação, valide dentro da loja se o menu ficou <strong>publicado e ativo</strong>. Para isso, abra o <strong>ID da loja</strong> que foi usado de exemplo.' },
+    { t:'passos', v:[
+      'Na página da loja, clique em <strong>Operar</strong>.',
+      'Clique em <strong>"Inicializar menu (nova versão)"</strong> e depois em <strong>"Gerenciar cardápio de referência"</strong>.',
+      'Na aba "Cardápio de referência de outra plataforma", confira se o menu está como <strong>"Publicado"</strong>.'
+    ]},
+    { t:'atencao', titulo:'Menu publicado', v:'Se a loja estiver com a tag <strong>"Publicado"</strong> ao lado do nome do cardápio de referência, o menu foi <strong>ativado com sucesso</strong>.' }
+  ]
+},
+
+a5_5: {
+  titulo:'Bench de nível loja: link de outra plataforma',
+  objetivo:'Criar o bench de uma loja de nível loja a partir do link enviado pelo estabelecimento.',
+  blocos:[
+    { t:'texto', v:'Fluxo para lojas de nível loja que utilizam <strong>cardápio de outra plataforma</strong> como benchmarking.' },
+    { t:'caminho', v:'<b>Estabelecimento</b> → <b>Gerenciamento de Clientes</b> → <b>Leads e estabelecimentos</b>' },
+    { t:'passos', v:[
+      'Pesquise em <strong>"ID do estabelecimento"</strong>, clique em <strong>Busca</strong> e depois em <strong>Ver</strong>.',
+      'Na página da loja, clique em <strong>Operar</strong>.',
+      'Clique em <strong>"Inicializar menu (nova versão)"</strong>.',
+      'Clique em <strong>"Gerenciar cardápio de referência"</strong> — na seção "Cardápio de outra plataforma" fica o <strong>link enviado pelo estabelecimento</strong>.',
+      'Clique na aba <strong>"Cardápio de referência de outra plataforma"</strong> e escolha <strong>"Copiar cardápio de outra plataforma"</strong>.',
+      'Dê de <strong>dois a três cliques no nome do estabelecimento</strong> para abrir a janela "Inicializar cardápio".',
+      '<strong>Cole o link iFood</strong> disponibilizado e clique em <strong>Enviar</strong>. Aguarde carregar os dados.',
+      'Após gerar o cardápio, é possível <strong>copiar, editar ou deletar</strong> qualquer item e categoria, caso necessário.',
+      'Estando tudo correto, clique em <strong>Lançamento</strong>.',
+      'Confira se o menu ficou como <strong>"Publicado"</strong>.'
+    ]},
+    { t:'atencao', titulo:'Se liga!', v:'<strong>1.</strong> Sempre que subir um novo menu na loja, esse menu deve ser <strong>publicado</strong> para que se torne o benchmarking. <strong>2.</strong> Sempre <strong>confira o menu criado</strong>, garantindo que todas as informações foram inseridas corretamente.' }
+  ]
+},
+
+a5_6: {
+  titulo:'Bench de nível loja: menu dine-in',
+  objetivo:'Criar o bench por upload de fotos ou PDF, com geração por IA.',
+  blocos:[
+    { t:'texto', v:'Fluxo para lojas de nível loja que utilizam <strong>menu dine-in</strong> como benchmarking — o cardápio é gerado por IA a partir de fotos ou PDF.' },
+    { t:'caminho', v:'<b>Estabelecimento</b> → <b>Gerenciamento de Clientes</b> → <b>Leads e estabelecimentos</b>' },
+    { t:'passos', v:[
+      'Pesquise em <strong>"ID do estabelecimento"</strong>, clique em <strong>Busca</strong> e depois em <strong>Ver</strong>.',
+      'Na página da loja, clique em <strong>Operar</strong>.',
+      'Clique em <strong>"Inicializar menu (nova versão)"</strong> e depois em <strong>"Gerenciar cardápio de referência"</strong>.',
+      'Clique na aba <strong>"Cardápio de referência para consumo no local"</strong>.',
+      'Escolha <strong>"Criação inteligente de cardápio"</strong> e clique em <strong>Selecionar</strong>.',
+      'Em "Faça upload do seu cardápio", <strong>anexe o cardápio em PDF ou imagem</strong> (JPG, JPEG, PNG e PDF; até 50MB) e clique em <strong>Enviar</strong>.',
+      '<strong>Aguarde o cardápio ser gerado</strong> pela IA — pode levar alguns minutos; não feche a janela ou a aba.',
+      'Após gerar, é possível <strong>copiar, editar ou deletar</strong> qualquer item e categoria.',
+      'Estando tudo correto, clique em <strong>Lançamento</strong>.',
+      'Confira se o menu ficou como <strong>"Publicado"</strong>.'
+    ]}
+  ]
+},
+
+a5_7: {
+  titulo:'Benchmarking: pontos de atenção',
+  objetivo:'Reconhecer as situações que mais geram retrabalho no bench.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      '<strong>+ de 1 menu na marca:</strong> faça o processo de criação de bench <strong>para cada menu</strong>. Ex.: se existirem 3 menus, você subirá 3 benchs.',
+      '<strong>Item mais caro, e agora?</strong> Isso acontece porque em algum momento foi publicado um bench naquela loja. Durante a fase de teste, o que faremos é <strong>apagar o menu que estiver como publicado dentro da loja</strong>.',
+      '<strong>Lojas iguais nos menus:</strong> se dentro da marca existirem vários menus e as mesmas lojas em cada um deles, é <strong>obrigatório usar o mesmo link</strong> para fazer o bench de todos.',
+      '<strong>Lojas do mesmo signatário:</strong> em casos de lojas do mesmo signatário, você colocará o ID <strong>apenas uma vez</strong> na planilha.',
+      '<strong>Quais signatários pegar?</strong> Todos os signatários da marca em que estiver atuando.',
+      '<strong>Como encontrar o signatário?</strong> Filtre pela marca na planilha de signatários e copie todos os IDs: <a href="https://docs.google.com/spreadsheets/d/1gLQhyvG9nic578L3RJQ9yFONBazCBZE-VA8zKQtsUTI/edit?gid=1425600379#gid=1425600379" target="_blank" rel="noopener">planilha de signatários ↗</a>.'
+    ]}
+  ]
+},
+
+
+/* ===================== MÓDULO 6 ===================== */
+a6_1: {
+  titulo:'O que é PIC Coverage',
+  objetivo:'Entender a meta da demanda, por qual fila ela chega e onde registrar o resultado.',
+  blocos:[
+    { t:'texto', v:'A meta obrigatória é que <strong>98% dos itens do menu tenham foto</strong> — garantir isso é o objetivo principal da demanda de PIC: <strong>inserir o máximo de fotos que for possível</strong>.' },
+    { t:'figura', v:'pic', legenda:'Num cardápio de 50 itens, 98% significa no máximo um item sem foto. É esse o alvo da análise.' },
+    { t:'passos', lista:true, v:[
+      'As tasks dessa demanda são enviadas pela fila <strong>"KA BR_Revisão de Menu"</strong>.',
+      'O resultado da análise deve ser preenchido na <a href="https://docs.google.com/spreadsheets/d/1LN38jXoQeGac1RyAk0CIf90Rr5q3cSV3nL-V4FF5vs4/edit?gid=2079525578#gid=2079525578" target="_blank" rel="noopener"><strong>planilha PIC COVERAGE ↗</strong></a>, para termos controle das nossas ações registradas.',
+      '<strong>Tipo de menu da loja:</strong> a loja pode ter menu de <strong>nível marca</strong> (sincronizados), de <strong>nível loja</strong> ou <strong>integrado</strong>. Consulte o tipo na coluna <strong>"E"</strong> da planilha <a href="https://docs.google.com/spreadsheets/d/1-WMBConE48XBidjAdZBY4kqfyXxBkNNKA92yqOR6OVA/edit?gid=0#gid=0" target="_blank" rel="noopener"><strong>"Store - menu API or NO" ↗</strong></a>.'
+    ]},
+    { t:'atencao', titulo:'Menu integrado', v:'Para menu integrado <strong>não é necessário fazer nenhuma ação</strong> — apenas realizar a análise e preencher a planilha.' }
+  ]
+},
+
+a6_2: {
+  titulo:'O que analisar na loja',
+  objetivo:'Saber os quatro pontos da análise e onde buscar as fotos que faltam.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      '<strong>Itens sem foto no menu</strong> — ex.: item sem foto e você adicionou → preencha a coluna <strong>G</strong> como <strong>feito</strong>.',
+      '<strong>Nome da loja</strong> — ex.: loja com nome fora do padrão oficial → preencha a coluna <strong>H</strong> como <strong>nome de loja incorreto</strong>.',
+      '<strong>Nome do prato (incluindo a escrita) × foto</strong> — a descrição e a imagem precisam corresponder ao item vendido.',
+      '<strong>Itens inativos disponíveis para venda</strong> — itens que não deveriam estar disponíveis → preencha a coluna <strong>I</strong> como <strong>sim</strong>.'
+    ]},
+    { t:'atencao', titulo:'Onde buscar as fotos', v:'Procure a foto dos itens no <strong>iFood, Rappi e site próprio da marca</strong>. Para itens genéricos, como Coca-Cola, você pode pegar imagens do <strong>Google</strong>, desde que correspondam ao item e tenham <strong>fundo branco</strong>. Há também um <a href="https://drive.google.com/drive/folders/1gfhwcwZ_ojzirRRDZ4WqAV-xvEnlJb8I" target="_blank" rel="noopener"><strong>drive com as fotos faltantes dos menus sincronizados ↗</strong></a>.' }
+  ]
+},
+
+a6_3: {
+  titulo:'Como preencher a planilha',
+  objetivo:'Preencher cada coluna da planilha PIC COVERAGE com o valor certo.',
+  blocos:[
+    { t:'texto', v:'As colunas da <a href="https://docs.google.com/spreadsheets/d/1LN38jXoQeGac1RyAk0CIf90Rr5q3cSV3nL-V4FF5vs4/edit?gid=2079525578#gid=2079525578" target="_blank" rel="noopener"><strong>planilha PIC COVERAGE ↗</strong></a> devem ser preenchidas da seguinte forma:' },
+    { t:'tabela', cab:['Coluna','O que preencher'], v:[
+      ['E','Se o lead é <strong>KA, CKA ou GERAL</strong>.'],
+      ['F','Se o menu é <strong>integrado</strong>.'],
+      ['G','<strong>feito</strong> = sempre que adicionar alguma foto · <strong>não feito</strong> = quando não for possível realizar (não localizou as fotos ou todos os itens já tinham) · <strong>N/A</strong> = menu integrado.'],
+      ['H','<strong>tudo correto</strong> = nenhum erro · <strong>nome da loja incorreto</strong> = fora do padrão oficial (nome + localização) · <strong>legenda incorreta</strong> = descrição não bate com o item · <strong>imagem não corresponde com a legenda</strong> = foto não bate com a descrição · <strong>item não corresponde à categoria</strong> = itens que não deveriam aparecer para o cliente final.'],
+      ['I','<strong>sim</strong> = encontrou itens inativos à venda · <strong>não</strong> = não encontrou · <strong>N/A</strong> = menu integrado.']
+    ]}
+  ]
+},
+
+a6_4: {
+  titulo:'E após a análise inicial?',
+  objetivo:'Saber o que acontece depois do seu preenchimento e onde registrar fotos não encontradas.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      '<strong>Segunda análise:</strong> os PoCs de menu farão uma segunda análise em cima dos itens reportados com algum tipo de erro. O objetivo é corrigir lojas com nome fora do padrão, itens com legenda incorreta ou cujo nome não condiz com a foto enviada.',
+      '<strong>Fotos não encontradas:</strong> ao não conseguir incluir fotos por não encontrá-las em nenhuma plataforma, indique isso na coluna <strong>"K"</strong> da planilha de resultados, em forma de observação.'
+    ]}
+  ]
+},
+
+a6_5: {
+  titulo:'Como concluir a task',
+  objetivo:'Marcar na task exatamente o que foi realizado na loja.',
+  blocos:[
+    { t:'texto', v:'Na task da fila "KA BR_Revisão de Menu", em "Realizando PIC COVERAGE", selecione <strong>apenas</strong> o que você realizou na loja, considerando:' },
+    { t:'passos', lista:true, v:[
+      '<strong>Inclusão de fotos:</strong> quando conseguir incluir foto nos itens, <strong>mesmo que tenha sido apenas 1</strong>.',
+      '<strong>Edição de fotos:</strong> para casos em que o item já tinha foto — ex.: melhorar a qualidade de uma foto existente ou reenviar uma que estava em análise.',
+      '<strong>Nenhuma das opções:</strong> quando não for possível inserir nenhuma foto, independentemente do motivo (menu integrado, não encontrou a foto etc.).'
+    ]},
+    { t:'atencao', titulo:'Não realizou?', v:'Caso não tenha realizado, <strong>indique o motivo</strong> no campo "Caso não tenha realizado, indique o motivo".' }
+  ]
+},
+
+/* ===================== MÓDULO 7 ===================== */
+a7_1: {
+  titulo:'Análise de Intent',
+  objetivo:'Classificar uma busca pela intenção real do usuário.',
+  blocos:[
+    { t:'texto', v:'O primeiro passo é entender <strong>a intenção real do usuário</strong> ao realizar a busca. Não é sobre a palavra em si, mas sobre <strong>o que o usuário quer encontrar</strong>.' },
+    { t:'duo', v:[
+      { h:'✗ Non-Brand/Shop Name Intent', p:[
+        'O usuário <strong>não cita nenhuma marca</strong> específica.',
+        'Ele busca uma categoria, tipo de comida ou característica.',
+        'Ex.: <strong>"hambúrguer"</strong>, <strong>"japa barato"</strong>.'
+      ]},
+      { h:'✓ Brand/Shop Name Intent', p:[
+        'O usuário <strong>já sabe exatamente onde quer comprar</strong>.',
+        'Ele digita o nome da marca ou da loja.',
+        'Ex.: <strong>"McDonald\'s"</strong>, <strong>"Bacio di Latte"</strong>.'
+      ]}
+    ]}
+  ]
+},
+
+a7_2: {
+  titulo:'Classificação da marca',
+  objetivo:'Separar KA, CKA e lojas que não são nenhum dos dois.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      '<strong>KA:</strong> grandes cadeias nacionais ou internacionais — você reconhece o nome instantaneamente. Ex.: McDonald\'s, KFC, Starbucks, Burger King, Pizza Hut, Subway.',
+      '<strong>CKA:</strong> cadeias menores (locais ou regionais), favoritos locais, conhecidos em uma região ou mercado específico.',
+      '<strong>Não KA/CKA:</strong> lojas únicas, pequenas e geralmente de uma única unidade, não uma cadeia. Ex.: "Pizzaria do Tony", "City Wok", "The Corner Cafe", "Doceria da Maria".'
+    ]},
+    { t:'atencao', titulo:'Regras', v:'Em caso de dúvida, classifique como <strong>Loja Não KA/CKA</strong>. Regra prática: <strong>sem intenção de marca = N/A</strong>. E lembre-se: <strong>atuamos apenas em KA</strong>.' }
+  ]
+},
+
+a7_3: {
+  titulo:'Brand Standard Name',
+  objetivo:'Saber quando e como preencher o nome padrão da marca.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      '<strong>Quando preencher?</strong> Somente quando a etapa anterior estiver classificada como <strong>KA</strong> ou <strong>CKA</strong>.',
+      '<strong>O que deve ser feito?</strong> Inserir o <strong>Nome Padrão da Marca</strong>, exatamente como cadastrado oficialmente.',
+      '<strong>Por que isso é tão importante?</strong> Evita erros de grafia e garante que a marca seja facilmente localizada no Gattaran.',
+      '<strong>Exemplo:</strong> ❌ "MC Donalds" → ✅ "McDonald\'s".'
+    ]},
+    { t:'atencao', titulo:'Importante', v:'Nome padrão <strong>não é sugestão, é regra</strong>.' }
+  ]
+},
+
+a7_4: {
+  titulo:'Como definir se é common tag',
+  objetivo:'Decidir entre Yes e No usando o critério de valor para a busca.',
+  blocos:[
+    { t:'texto', v:'É positivo para <strong>tudo que ajuda o usuário a localizar o estabelecimento</strong>.' },
+    { t:'passos', lista:true, v:[
+      '<strong>SIM — selecione Yes:</strong> a tag <strong>agrega valor à busca</strong> e facilita a localização do estabelecimento.',
+      '<strong>NÃO — selecione No:</strong> a tag <strong>não contribui</strong> para a experiência de busca do usuário.',
+      '<strong>Coluna "Note":</strong> use apenas para exceções, dúvidas específicas e contexto adicional para quem revisa ou aprova.'
+    ]},
+    { t:'atencao', titulo:'Regra de ouro', v:'<strong>Se não agrega à busca, não vira tag.</strong>' }
+  ]
+},
+
+a7_5: {
+  titulo:'Adicionando a common tag no Gattaran',
+  objetivo:'Cadastrar a tag na marca e entender a fila de aprovação.',
+  blocos:[
+    { t:'caminho', v:'<b>Estabelecimento</b> → <b>CRM</b> → <b>Marcas</b>' },
+    { t:'passos', v:[
+      'Pesquise pelo <strong>nome da marca</strong> em que quer adicionar a common tag e clique em <strong>Buscar</strong>.',
+      'Na linha da marca, clique nos <strong>três pontinhos</strong> e depois em <strong>Editar</strong>.',
+      'Em <strong>"Tags comuns"</strong>, clique em <strong>Adicionar</strong> — é nesse campo que você cadastra a tag associada à marca.',
+      'Para finalizar, clique em <strong>Salvar</strong>, no final da tela.'
+    ]},
+    { t:'atencao', titulo:'Se liga!', v:'<strong>Garanta a qualidade:</strong> revise a ortografia e a escrita da sua tag — isso evita erros nas buscas após o cadastro. <strong>Reúna seus dados:</strong> é recomendado adicionar todas as tags da marca de uma vez, pois não é possível adicionar outra enquanto aguarda uma tag ser aprovada. <strong>Após adicionar a tag:</strong> ela entra em uma fila para aprovação e ficará com status de <strong>pendente</strong>.' }
+  ]
+},
+
+/* ===================== MÓDULO 8 ===================== */
+a8_1: {
+  titulo:'Menu por pedido do cliente',
+  objetivo:'Atender uma task da fila "Menu Creation – Dine In Menu" do começo ao fim.',
+  blocos:[
+    { t:'texto', v:'O cliente tem a possibilidade de pedir a criação do menu através do <strong>99Admin</strong>. Esse pedido chega para nós através de tasks na fila <strong>"Menu Creation – Dine In Menu"</strong>.' },
+    { t:'caminho', v:'<b>Configurações do sistema</b> → <b>Lista de tarefas</b> → aba de <b>tarefas do time</b> (Team Tasks)' },
+    { t:'passos', v:[
+      'Na Lista de tarefas, abra a aba de tarefas do time e clique em <strong>Iniciar análise</strong>.',
+      '<strong>Analise as imagens e PDFs enviados</strong> (disponíveis na URL da task) para verificar se correspondem aos requisitos de criação de menu.',
+      'Se atender aos requisitos: clique em <strong>gerenciar itens do menu</strong> e escolha de acordo com o pedido do cliente — <strong>menu dine-in</strong> ou <strong>menu com link de outra plataforma</strong>.',
+      'Após gerar o menu, clique em <strong>Lançamento (Launch)</strong>, para que o bench fique ativo junto com o menu.',
+      'Após lançar o bench, clique em <strong>"Copiar para o cardápio 99"</strong> e inclua a <strong>% de desconto dessa marca</strong>.',
+      'Após subir o menu, volte na tela da tarefa, clique em <strong>"Aprovado"</strong> e em enviar.'
+    ]},
+    { t:'atencao', titulo:'Menu fora dos requisitos', v:'Caso o menu não atenda aos requisitos para criação, é preciso <strong>negar a tarefa</strong>: selecione <strong>"Não aprovado"</strong>, marque o <strong>motivo</strong> pelo qual o menu não atende ao requisito e clique em <strong>"enviar e voltar"</strong>.' }
+  ]
+},
+
+a8_2: {
+  titulo:'Subindo o cardápio físico (balcão)',
+  objetivo:'Enviar o cardápio de balcão e reconhecer o que é aceito e o que é recusado.',
+  blocos:[
+    { t:'texto', v:'Fluxo para <strong>enviar ou alterar o cardápio físico</strong> (cardápio de balcão) de uma loja.' },
+    { t:'caminho', v:'<b>GTR</b> → loja desejada → aba <b>Operar</b> → <b>Gerenciar itens do menu</b> → <b>Cardápio de balcão (físico)</b>' },
+    { t:'passos', v:[
+      'No GTR, entre na <strong>loja</strong> que deseja alterar e vá na aba <strong>Operar</strong>.',
+      'Clique no botão <strong>"Gerenciar itens do menu"</strong> — você será direcionado ao <strong>99Admin</strong>, na tela "Gerenciar itens do cardápio".',
+      'No canto <strong>superior direito</strong>, clique em <strong>"Cardápio de balcão (físico)"</strong>.',
+      'Em <strong>"Enviar cardápio físico/PDF"</strong>, clique em <strong>"Enviar arquivo"</strong> e suba o cardápio. Se houver, também é possível preencher o campo <strong>"Link do cardápio online"</strong>.',
+      'Clique em <strong>"Enviar para análise"</strong>.'
+    ]},
+    { t:'atencao', titulo:'Requisitos do envio', v:'<strong>Conteúdo:</strong> envie o cardápio real do restaurante, com informações claras e completas. <strong>Qualidade da imagem:</strong> o conteúdo deve estar nítido, sem reflexos de luz, sombras, rasuras ou partes cortadas. <strong>Formatos aceitos:</strong> fotos do cardápio físico (balcão/mesa), painéis, prints ou PDF de sistemas de pedidos próprios — inclui impresso do restaurante, print de sistema próprio, cardápios em painéis e tela do cardápio em tablet ou quiosque de autoatendimento.' },
+    { t:'atencao', titulo:'Não são aceitos', v:'Cardápios <strong>gerados por inteligência artificial</strong>, <strong>sem preço</strong> ou com <strong>palavras e conteúdos inadequados</strong>. Também <strong>não são aceitos cardápios com QR code</strong> usados em demais aplicativos de concorrentes. Imagens <strong>desfocadas, com reflexo ou recortadas</strong> são recusadas.' }
+  ]
+},
+
+/* ===================== MÓDULO 10 ===================== */
+a10_1: {
+  titulo:'Por quais filas o time é responsável',
+  objetivo:'Saber quais são as duas filas de auditoria e quem atua em cada uma.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      '<strong>Auditoria de leads duplicados (重复门店审核):</strong> utilizada para resgatar e analisar lojas que, quando criadas, ficam como se já existisse uma igual.',
+      '<strong>Non-standard contract audit:</strong> utilizada para aprovar os contratos dos signatários ao enviá-los para assinatura — <strong>apenas PoCs</strong>.'
+    ]}
+  ]
+},
+
+a10_2: {
+  titulo:'Como resgatar as tasks',
+  objetivo:'Chegar até a fila e iniciar uma análise.',
+  blocos:[
+    { t:'caminho', v:'<b>Configurações do sistema</b> → <b>Avaliar</b> → <b>Lista de tarefas</b>' },
+    { t:'passos', v:[
+      'No Gattaran, clique em <strong>Configurações do sistema</strong>.',
+      'Clique em <strong>Avaliar</strong> e depois em <strong>Lista de tarefas</strong>.',
+      'Clique na aba <strong>"Tarefas da equipe"</strong> — aqui é possível visualizar todas as filas que somos responsáveis por analisar.',
+      'Para iniciar, clique em <strong>"Iniciar análise"</strong> e você será direcionado.'
+    ]},
+    { t:'atencao', titulo:'Se liga na dica!', v:'Pela visualização de <strong>Gerenciamento de tarefas</strong> (Configurações do sistema → Avaliar → Gerenciamento de tarefas), é possível <strong>pesquisar pelo ID de qualquer loja</strong>. Você terá retorno de tudo que está <strong>pendente de aprovação</strong> e de todas as tarefas que já foram <strong>aprovadas ou recusadas</strong>.' }
+  ]
+},
+
+a10_3: {
+  titulo:'Analisando cada fila',
+  objetivo:'Saber o que comparar e qual resultado selecionar em cada auditoria.',
+  blocos:[
+    { t:'texto', v:'<strong>👯 Auditoria de leads duplicados</strong>' },
+    { t:'texto', v:'Para análise de <strong>suspeita de lojas duplicadas</strong>. A descrição da task pede para determinar se a <strong>loja principal e a filial são as mesmas</strong>.' },
+    { t:'passos', v:[
+      'Na Lista de tarefas, aba "Tarefas da equipe", localize <strong>"Auditoria de leads duplicados 重复门店审核"</strong> e clique em <strong>Iniciar análise</strong>.',
+      'Compare o <strong>Conteúdo da análise</strong> (dados da loja principal — PrimaryShop: nome, telefone, endereço, coordenadas, categoria) com o <strong>Conteúdo de referência</strong> (SecondaryShop: os mesmos dados da loja suspeita de duplicidade).',
+      'Em "Resultado da auditoria", selecione <strong>Passe</strong> ou <strong>Rejeitado</strong> de acordo com a análise.',
+      'Clique em <strong>"Enviar e voltar"</strong> (ou "Enviar e continuar" para seguir na fila).'
+    ]},
+    { t:'texto', v:'<strong>📄 Auditoria de contratos (Non-standard contract audit)</strong>' },
+    { t:'texto', v:'Para <strong>aprovação de contrato</strong> dos signatários ao enviá-los para assinatura — <strong>apenas PoCs</strong> atuam nela.' },
+    { t:'passos', v:[
+      'Na Lista de tarefas, aba "Tarefas da equipe", localize <strong>"Non-standard contract audit"</strong> e clique em <strong>Iniciar análise</strong>.',
+      'Analise o <strong>Conteúdo da análise</strong> (tipo e nome do signatário, ID, CNPJ, razão social, CPF e nome do representante legal, informações sobre taxas) comparando com o <strong>Conteúdo de referência</strong> (certificado de alteração de contrato, arquivos e descrições de contrato — CASIDs).',
+      'Em "Resultado da auditoria", selecione <strong>Passado</strong> ou <strong>Não aprovado</strong>.',
+      'Clique em <strong>"Enviar e voltar"</strong> (ou "Enviar e continuar").'
+    ]}
+  ]
+},
+
+/* ===================== MÓDULO 11 ===================== */
+a11_1: {
+  titulo:'Maiores erros e desafios',
+  objetivo:'Reconhecer os tropeços mais comuns antes de cometê-los.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      '<strong>Apaguei o menu, e agora?</strong> Não é possível recuperar um menu apagado — é necessário recriar todo o menu. Porém, se a loja da marca estiver com o último menu sincronizado, então é possível ressincronizar.',
+      '<strong>Como alterar o preço de itens adicionais?</strong> A alteração é feita dentro do cardápio da marca. Os valores devem ser alterados <strong>dentro dos grupos de itens adicionais</strong> — se alterar apenas o valor do item, não reflete no grupo.',
+      '<strong>Por que é difícil manter apenas o menu da marca?</strong> Os franqueados sofrem com essa modalidade, pois todos têm visão de preço dos menus e poder de edição.',
+      '<strong>É possível ter mais de um cardápio criado na marca?</strong> Sim! É inclusive o recomendado para evitar a criação de cardápios por loja — duplicando os cardápios ou criando do zero.',
+      '<strong>Apagar itens da biblioteca afeta o cardápio?</strong> Sim! Não é recomendado apagar itens na marca — apenas removê-los do cardápio.'
+    ]}
+  ]
+},
+
+a11_2: {
+  titulo:'Curiosidades',
+  objetivo:'Fechar o curso com as perguntas que sempre voltam.',
+  blocos:[
+    { t:'passos', lista:true, v:[
+      '<strong>É possível ter itens e preços diferentes em cada cardápio?</strong> Sim — basta criar os itens dentro da marca e inserir no devido cardápio.',
+      '<strong>Fotos no menu são obrigatórias?</strong> Sim, e a meta é que <strong>98% dos itens</strong> no menu possuam fotos (ver PIC Coverage).',
+      '<strong>Por que aparece a mensagem "item mais caro"?</strong> O aviso aparece para itens que estão com valor acima do acordado em contrato. Itens fora da regra <strong>não podem ficar disponíveis</strong>.',
+      '<strong>Como saber quando é integrado, sincronizado ou feito do zero?</strong> A informação aparece na planilha, nas colunas <strong>AK a AN</strong>.'
+    ]}
+  ]
+}
+
+};
+
+/* ================= CHECKPOINTS ================= */
+const CHECKPOINTS = {
+cp1:{ titulo:'Checkpoint · Fundamentos do Menu', perguntas:[
+  { q:'Quando usar menu de nível loja?',
+    opcoes:['Sempre que a loja preferir','Só em casos específicos, com cardápio próprio diferente das demais','Quando há mais de 10 lojas'],
+    correta:1, explica:'Prefira <strong>sempre nível marca</strong>; nível loja é exceção para cardápio próprio.' },
+  { q:'Quem acessa o menu nível marca?',
+    opcoes:['Apenas a 99','Superadmins e gerentes da marca, além dos 2nd party','Somente os clientes'],
+    correta:1, explica:'Acessam <strong>superadmins e gerentes da marca</strong> e os 2nd party.' },
+  { q:'Em um menu que vem por integração, qual é a atuação da nossa equipe?',
+    opcoes:['Criar o menu do zero','Nenhuma — a marca faz todo o processo','Apenas sincronizar as lojas'],
+    correta:1, explica:'No menu <strong>por integração</strong> a marca faz tudo e <strong>nossa equipe não atua em nada</strong>. No menu <em>feito pela marca</em>, aí sim atuamos sincronizando as lojas.' },
+  { q:'Onde a planilha indica se o menu é integrado, sincronizado ou feito do zero?',
+    opcoes:['Colunas AK a AN','Coluna BI','Coluna CA'],
+    correta:0, explica:'A informação aparece nas <strong>colunas AK a AN</strong> da planilha.' }
+]},
+
+cp2:{ titulo:'Checkpoint · Criando o cardápio da marca', perguntas:[
+  { q:'O que ativa o menu e inicia o benchmarking?',
+    opcoes:['Salvar o cardápio','Publicar o menu (Lançamento)','Sincronizar as lojas'],
+    correta:1, explica:'É a <strong>publicação (Lançamento)</strong> que ativa o menu e inicia o Bench — vale para loja e marca.' },
+  { q:'Na geração do cardápio online, qual a direção de ajuste do desconto?',
+    opcoes:['Aumento','Redução','Nenhuma'],
+    correta:1, explica:'Direção de ajuste = <strong>Redução</strong>, com o % da planilha/tracker.' },
+  { q:'Qual é o limite da ação em lote ao marcar itens como disponíveis?',
+    opcoes:['20 itens','50 itens','Não há limite'],
+    correta:1, explica:'O limite é de <strong>50 itens</strong> por vez — acima disso, vá fazendo de 50 em 50.' },
+  { q:'O que impede a opção "Gerar itens e cardápio" na marca?',
+    opcoes:['A marca já ter cardápio, item ou grupo de itens adicionais criado','A marca ter menos de 5 lojas','O menu não ter fotos'],
+    correta:0, explica:'Não pode haver <strong>nenhum cardápio, item ou grupo de itens adicionais já criado na marca</strong>. Marcas com "ABANDON" também não podem ser usadas.' }
+]},
+
+cp3:{ titulo:'Checkpoint · Sincronização do menu', perguntas:[
+  { q:'No RTBO, qual método de sincronização usamos?',
+    opcoes:['Adicionar categorias','Abrir uma nova loja/Alterar menu','Adicionar novos itens'],
+    correta:1, explica:"No RTBO é sempre <strong>'Abrir uma nova loja/Alterar menu'</strong>." },
+  { q:'O que é obrigatório para conseguir sincronizar?',
+    opcoes:['As lojas serem da mesma marca e estarem afiliadas a ela','As lojas estarem suspensas','O menu ter 50+ itens'],
+    correta:0, explica:'Sem lojas <strong>da mesma marca e afiliadas</strong>, não é possível enviar.' },
+  { q:'Onde acompanhar o andamento da sincronização?',
+    opcoes:['Na aba Cardápio','Em Mais funções → Tarefa em andamento','No CRM'],
+    correta:1, explica:'Acompanhe em <strong>Mais funções → Tarefa em andamento</strong> — é ali que aparece se algo deu errado.' },
+  { q:'De onde vem o nome do cardápio a sincronizar no RTBO?',
+    opcoes:['Do nome da loja','Da coluna AK — Template Name da planilha','Do CNPJ'],
+    correta:1, explica:'O nome vem da coluna <strong>AK — Template Name</strong> e precisa ser <strong>exatamente igual</strong> ao do GTR.' },
+  { q:'A loja já está com o menu sincronizado, mas o RTBO não fecha e "Número de itens" está em vermelho. O que fazer?',
+    opcoes:['Sincronizar o menu de novo','Marcar os itens indisponíveis como disponíveis, categoria por categoria, no 99Admin','Apagar o menu e recriar'],
+    correta:1, explica:'Os itens vieram <strong>indisponíveis</strong>: no 99Admin, filtre por Status do item = Indisponível e use <strong>Seleção em lote → Marcar como disponível</strong> em todas as categorias.' }
+]},
+
+cp4:{ titulo:'Checkpoint · Itens, grupos e edição', perguntas:[
+  { q:'Onde se edita o valor de um item que pertence a um grupo adicional?',
+    opcoes:['Direto no item','Dentro do grupo de itens adicionais','Tanto faz'],
+    correta:1, explica:'A edição deve ser feita <strong>dentro do grupo</strong> — no item não reflete.' },
+  { q:'Antes de um item existir dentro de um grupo, o que é preciso?',
+    opcoes:['Nada','Ele já deve existir como item individual','Publicar o menu'],
+    correta:1, explica:'Primeiro cria-se o <strong>item individual</strong>, depois vincula-se ao grupo.' },
+  { q:'Qual tipo de item usamos ao criar um item na biblioteca da marca?',
+    opcoes:['Item combinado','Sempre "item único"','Depende da categoria'],
+    correta:1, explica:'Em Tipo de item, utilize <strong>SEMPRE "item único"</strong>.' },
+  { q:'Para que serve o código PDV?',
+    opcoes:['Para ordenar os itens no app','Para integrar o cardápio criado pela 99 com o sistema de gestão do restaurante','Para definir o preço do item'],
+    correta:1, explica:'O PDV é um <strong>código identificador único</strong> por item, usado para <strong>integrar</strong> o cardápio da 99 ao sistema do restaurante.' },
+  { q:'Como substituir um grupo já vinculado a um item?',
+    opcoes:['Basta trocar o grupo e salvar','Apagar, salvar, adicionar e salvar','Não é possível substituir'],
+    correta:1, explica:'O processo é <strong>"apagar, salvar, adicionar e salvar"</strong>.' }
+]},
+
+cp5:{ titulo:'Checkpoint · Benchmarking', perguntas:[
+  { q:'O que o benchmarking compara?',
+    opcoes:['Lojas da mesma cidade','Preços da 99 com o iFood da mesma marca','Tempo de entrega'],
+    correta:1, explica:'Compara <strong>preços 99 × iFood</strong> da mesma marca; o item pode ficar bloqueado até o ajuste.' },
+  { q:'Na paridade por signatário, o que vai nas colunas B e C da planilha?',
+    opcoes:['% de desconto',"Sempre '50'",'ID do signatário'],
+    correta:1, explica:'B e C são <strong>sempre 50</strong>; o ID vai na A e o % nas D e E.' },
+  { q:'No bench de nível loja com dine-in, como o cardápio é criado?',
+    opcoes:['Colando link do iFood','Por upload de fotos/PDF na Criação inteligente (IA)','Item por item'],
+    correta:1, explica:'Situação 2: <strong>Criação inteligente</strong> — upload em JPG/JPEG/PNG/PDF até 50MB e a IA gera.' },
+  { q:'A marca tem 3 menus. Quantos benchs você sobe?',
+    opcoes:['1, o da marca','3 — um para cada menu','Nenhum, o bench é automático'],
+    correta:1, explica:'Faça o processo de criação de bench <strong>para cada menu</strong>: 3 menus = 3 benchs.' },
+  { q:'Existem vários menus na marca com as mesmas lojas dentro. O que é obrigatório?',
+    opcoes:['Usar o mesmo link para fazer o bench de todos','Usar um link diferente por menu','Criar um menu novo'],
+    correta:0, explica:'É <strong>obrigatório usar o mesmo link</strong> para fazer o bench de todos.' }
+]},
+
+cp6:{ titulo:'Checkpoint · PIC Coverage', perguntas:[
+  { q:'Qual a meta obrigatória do PIC Coverage?',
+    opcoes:['98% dos itens com foto','100% dos menus integrados','90% das fachadas'],
+    correta:0, explica:'Meta: <strong>98% dos itens com foto</strong> — inserir o máximo possível.' },
+  { q:'Onde buscar fotos dos itens?',
+    opcoes:['Só no Google','iFood, Rappi e site da marca (Google só para genéricos com fundo branco)','Apenas no iFood'],
+    correta:1, explica:'Busque no <strong>iFood, Rappi e site da marca</strong>; Google só para genéricos com fundo branco. Há também o drive de fotos faltantes.' },
+  { q:"Na conclusão da task, quando marcar 'Inclusão de fotos'?",
+    opcoes:['Quando o item já tinha foto','Quando conseguir incluir foto, mesmo que só 1','Nunca'],
+    correta:1, explica:"'Inclusão de fotos' = conseguiu adicionar foto, <strong>mesmo que apenas 1</strong>. Se o item já tinha foto e você melhorou, é <em>Edição de fotos</em>." },
+  { q:'A loja tem menu integrado. O que fazer?',
+    opcoes:['Criar o menu do zero','Nenhuma ação: apenas analisar e preencher a planilha','Sincronizar o menu da marca'],
+    correta:1, explica:'Para menu integrado <strong>não é necessário fazer nenhuma ação</strong> — apenas a análise e o preenchimento.' },
+  { q:'Você não encontrou a foto em nenhuma plataforma. Onde registrar?',
+    opcoes:['Na coluna K da planilha, como observação','Na coluna G como "feito"','Em lugar nenhum'],
+    correta:0, explica:'Indique na coluna <strong>"K"</strong> da planilha de resultados, em forma de observação.' }
+]},
+
+cp7:{ titulo:'Checkpoint · Query Review & Common Tags', perguntas:[
+  { q:'Qual a regra de ouro da common tag?',
+    opcoes:['Toda palavra da marca vira tag','Se não agrega à busca, não vira tag','Só pratos viram tag'],
+    correta:1, explica:'<strong>Se não agrega à busca, não vira tag.</strong>' },
+  { q:'Quando preencher o Brand Standard Name?',
+    opcoes:['Sempre','Só quando for KA ou CKA','Nunca'],
+    correta:1, explica:'Só quando classificado como <strong>KA ou CKA</strong>, com o nome oficial exato.' },
+  { q:'Onde adicionamos uma common tag?',
+    opcoes:['Menu da marca','Estabelecimento → CRM → Marcas → Editar → Tags comuns','Configurações do sistema'],
+    correta:1, explica:'Caminho: <strong>CRM → Marcas → Editar → Tags comuns → Adicionar → Salvar</strong>.' },
+  { q:'A busca foi "japa barato". Qual o intent?',
+    opcoes:['Brand/Shop Name Intent','Non-Brand/Shop Name Intent','Depende da cidade'],
+    correta:1, explica:'Não há marca citada — é uma categoria/característica, logo <strong>Non-Brand/Shop Name Intent</strong>.' },
+  { q:'Em caso de dúvida na classificação, o que fazer?',
+    opcoes:['Classificar como KA','Classificar como Loja Não KA/CKA','Deixar em branco'],
+    correta:1, explica:'Em caso de dúvida, classifique como <strong>Loja Não KA/CKA</strong>. E lembre-se: atuamos apenas em KA.' }
+]},
+
+cp8:{ titulo:'Checkpoint · Demandas do cliente', perguntas:[
+  { q:'Por qual fila chegam os pedidos de criação de menu feitos pelo cliente?',
+    opcoes:['KA BR_Revisão de Menu','Menu Creation – Dine In Menu','Non-standard contract audit'],
+    correta:1, explica:'Os pedidos do 99Admin chegam pela fila <strong>"Menu Creation – Dine In Menu"</strong>.' },
+  { q:'Depois de gerar o menu da task, qual é a ordem correta?',
+    opcoes:['Copiar para o cardápio 99 e depois Lançamento','Lançamento e depois "Copiar para o cardápio 99" com a % de desconto','Apenas aprovar a task'],
+    correta:1, explica:'Primeiro <strong>Lançamento (Launch)</strong>, para o bench ficar ativo, e depois <strong>"Copiar para o cardápio 99"</strong> incluindo a % de desconto da marca.' },
+  { q:'Qual destes cardápios físicos NÃO é aceito no envio?',
+    opcoes:['Print do sistema próprio de pedidos','Foto do cardápio em painel','Cardápio gerado por inteligência artificial'],
+    correta:2, explica:'Não são aceitos cardápios <strong>gerados por IA</strong>, sem preço, com conteúdo inadequado ou com QR code de concorrentes.' },
+  { q:'O menu da task não atende aos requisitos. O que fazer?',
+    opcoes:['Criar assim mesmo e avisar depois','Selecionar "Não aprovado", marcar o motivo e clicar em "enviar e voltar"','Deixar a task parada'],
+    correta:1, explica:'É preciso <strong>negar a tarefa</strong>: "Não aprovado" + motivo + "enviar e voltar".' }
+]},
+
+cp10:{ titulo:'Checkpoint · Auditorias e aprovações', perguntas:[
+  { q:'Por onde resgatamos as tasks de auditoria?',
+    opcoes:['Menu da marca','Configurações do sistema → Avaliar → Lista de tarefas → Tarefas da equipe','CRM → Marcas'],
+    correta:1, explica:'Caminho: <strong>Configurações do sistema → Avaliar → Lista de tarefas</strong>, aba Tarefas da equipe.' },
+  { q:'A fila de auditoria de contratos (Non-standard contract audit) é feita por quem?',
+    opcoes:['Qualquer analista','Apenas PoCs','Somente gerentes'],
+    correta:1, explica:'A auditoria de contratos é <strong>exclusiva dos PoCs</strong>.' },
+  { q:'Na auditoria de leads duplicados, o que você compara?',
+    opcoes:['PrimaryShop × SecondaryShop: nome, telefone, endereço, coordenadas e categoria','O contrato × a planilha','O menu × o iFood'],
+    correta:0, explica:'Compara-se o <strong>Conteúdo da análise</strong> (PrimaryShop) com o <strong>Conteúdo de referência</strong> (SecondaryShop).' },
+  { q:'Quer saber o que está pendente de aprovação para um ID específico. Onde olhar?',
+    opcoes:['Em Gerenciamento de tarefas, pesquisando pelo ID da loja','Na aba Cardápio','No relatório do 99Admin'],
+    correta:0, explica:'Em <strong>Configurações do sistema → Avaliar → Gerenciamento de tarefas</strong> dá para pesquisar por ID e ver pendentes, aprovadas e recusadas.' }
+]},
+
+cp11:{ titulo:'Checkpoint · Erros, dicas e curiosidades', perguntas:[
+  { q:'Você apagou um menu por engano. É possível recuperar?',
+    opcoes:['Sim, pelo histórico do GTR','Não — é necessário recriar; se a loja da marca estiver com o último menu sincronizado, dá para ressincronizar','Sim, abrindo uma task'],
+    correta:1, explica:'Não é possível recuperar um menu apagado. A saída é <strong>recriar</strong> ou <strong>ressincronizar</strong> a partir da marca.' },
+  { q:'Apagar itens da biblioteca de itens afeta o cardápio?',
+    opcoes:['Sim — o recomendado é apenas remover o item do cardápio','Não, são independentes','Só se o menu estiver publicado'],
+    correta:0, explica:'Sim! <strong>Não é recomendado apagar itens na marca</strong> — apenas removê-los do cardápio.' },
+  { q:'Por que aparece a mensagem "item mais caro"?',
+    opcoes:['O item está sem foto','O item está com valor acima do acordado em contrato','O item está sem código PDV'],
+    correta:1, explica:'O aviso aparece para itens acima do valor acordado. Itens fora da regra <strong>não podem ficar disponíveis</strong>.' },
+  { q:'É possível ter mais de um cardápio criado na mesma marca?',
+    opcoes:['Não','Sim, e é inclusive o recomendado','Só com aprovação do PoC'],
+    correta:1, explica:'Sim — é o recomendado para evitar a criação de cardápios por loja.' }
+]}
+};
+
+/* ================= PROVA FINAL ================= */
+const PROVA = { titulo:'Prova final · Curso de Menu', perguntas:[
+  { q:'Quando usamos menu de nível loja em vez de nível marca?',
+    opcoes:['Sempre que a loja preferir','Apenas em casos específicos em que a loja tem cardápio próprio, diferente das demais','Quando a marca tem mais de 10 lojas'],
+    correta:1, explica:'A regra prática é <strong>preferir sempre o nível marca</strong>. O nível loja é exceção para cardápios próprios.' },
+  { q:'O que ativa o menu e inicia o benchmarking?',
+    opcoes:['Salvar o cardápio','Publicar o menu (Lançamento)','Marcar os itens como disponíveis'],
+    correta:1, explica:'É a <strong>publicação (Lançamento)</strong> que ativa o menu e inicia o Bench — na loja e na marca.' },
+  { q:'Ao sincronizar o cardápio da marca com as lojas, o que é obrigatório?',
+    opcoes:['Que os estabelecimentos sejam da mesma marca e estejam afiliados a ela','Que as lojas estejam suspensas','Que o menu tenha ao menos 50 itens'],
+    correta:0, explica:'Sem estabelecimentos <strong>da mesma marca e afiliados</strong>, não é possível enviar a sincronização.' },
+  { q:'No RTBO, de onde vem o nome do cardápio que deve ser sincronizado?',
+    opcoes:['Do nome fantasia da loja','Da coluna AK — Template Name','Do ID do signatário'],
+    correta:1, explica:'Da coluna <strong>AK — Template Name</strong>, e o nome no GTR precisa ser exatamente igual.' },
+  { q:'Preciso alterar o valor de um item que faz parte de um grupo adicional. Onde faço isso?',
+    opcoes:['Direto no item, na Biblioteca de itens','Dentro do grupo: Grupos de itens adicionais → Editar → ajustar → Enviar','Em qualquer um dos dois, o resultado é o mesmo'],
+    correta:1, explica:'A edição deve ser feita <strong>dentro do grupo de itens adicionais</strong> — alterar só no item não reflete.' },
+  { q:'No benchmarking, o que comparamos?',
+    opcoes:['Preços entre lojas da mesma cidade','Preços do cardápio da 99 com o cardápio do iFood da mesma marca','Tempo de entrega entre plataformas'],
+    correta:1, explica:'Benchmarking é a <strong>comparação automática de preços 99 × iFood</strong> da mesma marca. O item pode ficar bloqueado para venda até o ajuste.' },
+  { q:'Na planilha de paridade por signatário, o que vai nas colunas B e C?',
+    opcoes:['A % de desconto da marca','Sempre "50"','O ID do signatário'],
+    correta:1, explica:'B e C são padrão: <strong>sempre 50</strong>. O ID vai na coluna A e a % de desconto nas D e E.' },
+  { q:'No benchmarking de nível loja com menu dine-in, como o cardápio é criado?',
+    opcoes:['Colando o link do iFood','Por upload de fotos ou PDF na "Criação inteligente de cardápio" (gerado por IA)','Digitando item por item, obrigatoriamente'],
+    correta:1, explica:'Aba "Cardápio de referência para consumo no local" → <strong>Criação inteligente</strong>: upload em JPG/PNG/PDF (até 50MB) e a IA gera.' },
+  { q:'Qual é a meta obrigatória do PIC Coverage?',
+    opcoes:['98% dos itens do menu com foto','100% dos menus integrados','90% das lojas com fachada'],
+    correta:0, explica:'A meta é que <strong>98% dos itens tenham foto</strong> — o objetivo é inserir o máximo possível.' },
+  { q:'Qual é a regra de ouro para definir se algo vira common tag?',
+    opcoes:['Toda palavra relacionada à marca vira tag','Se não agrega à busca, não vira tag','Somente nomes de pratos viram tag'],
+    correta:1, explica:'É positivo para tudo que <strong>ajuda o usuário a localizar o estabelecimento</strong>. <strong>Se não agrega à busca, não vira tag.</strong>' },
+  { q:'A auditoria de contratos (Non-standard contract audit) é feita por quem?',
+    opcoes:['Qualquer analista do time','Apenas PoCs','Pelo time comercial'],
+    correta:1, explica:'A auditoria de contratos é <strong>exclusiva dos PoCs</strong>.' }
+]};
+
+/* ================= GLOSSÁRIO ================= */
+const GLOSSARIO = [
+  ['GTR / Gattaran','Plataforma interna usada para gerenciar lojas, signatários, menus e tarefas da 99Food.'],
+  ['99Admin','Plataforma onde ficam o gerenciamento de itens do cardápio, o cardápio de balcão e os relatórios de lojas abertas/fechadas.'],
+  ['Nível Marca','Cardápio centralizado na marca, base para todas as lojas. É o padrão a ser usado.'],
+  ['Nível Loja','Cardápio criado ou personalizado individualmente em uma loja. Exceção, só para casos muito específicos.'],
+  ['Benchmarking / Bench','Comparação automática de preços entre o cardápio da 99 e o do iFood da mesma marca. O menu precisa ser publicado (Lançamento) para ativar o bench.'],
+  ['Lançamento (Launch)','A publicação do menu. É o que ativa o cardápio e inicia o benchmarking.'],
+  ['Biblioteca de itens','Onde os itens da marca são criados e editados, antes de serem vinculados a um cardápio.'],
+  ['Grupo de itens adicionais','Conjunto de adicionais vinculado a um item principal. O preço dos adicionais é editado dentro do grupo.'],
+  ['PDV','"Ponto De Venda" — código identificador único de cada item, usado para integrar o cardápio da 99 ao sistema de gestão do restaurante.'],
+  ['Template Name','Nome do cardápio a ser sincronizado, indicado na coluna AK da planilha (usado no RTBO quando a marca não tem menu integrado).'],
+  ['Dine-in','Menu de consumo no local. No bench de nível loja, é gerado por IA a partir de fotos ou PDF ("Criação inteligente de cardápio").'],
+  ['PIC Coverage','Demanda de revisão de menu com foco em fotos: meta de 98% dos itens com foto. Chega pela fila "KA BR_Revisão de Menu".'],
+  ['Common Tag','Palavra-chave associada a uma marca que ajuda o usuário a localizá-la na busca. Se não agrega à busca, não vira tag.'],
+  ['Brand Standard Name','Nome padrão da marca, exatamente como cadastrado oficialmente. Preenchido só quando a marca é KA ou CKA.'],
+  ['KA / CKA','KA = Key Account (grandes cadeias nacionais/internacionais). CKA = cadeias menores, locais ou regionais. Atuamos apenas em KA.'],
+  ['RTBO','"Ready To Business Online" — etapa de deixar a loja pronta para operar: menu, informação bancária, fachada e horário de funcionamento.'],
+  ['2nd party','Usuários externos parceiros com acesso ao menu da marca (superadmins/gerentes).'],
+  ['PoC','"Point of Contact" — ponto focal do time para um assunto/processo específico.']
+];
+
+
+/* =========================================================
+   MOTOR DO CURSO — navegação, progresso, quizzes e busca
+   ========================================================= */
+
+/* ---------- índices auxiliares ---------- */
+const ORDEM = [];                  // sequência linear de todas as aulas
+const MOD_DA_AULA = {};            // id da aula → id do módulo
+MODULOS.forEach(m => m.aulas.forEach(a => { ORDEM.push(a); MOD_DA_AULA[a] = m.id; }));
+const MOD_POR_ID = {};
+MODULOS.forEach((m,i) => { MOD_POR_ID[m.id] = m; m._i = i; });
+const TOTAL_AULAS = ORDEM.length;
+
+/* ---------- progresso (com fallback em memória) ---------- */
+const CHAVE_BASE = 'curso-menu-99food-v1';
+function chaveProgresso(){
+  return CHAVE_BASE + '::' + (usuarioAtual ? usuarioAtual.usuario.toLowerCase() : 'anonimo');
+}
+let progresso = { aulas:[], checkpoints:{}, prova:null };
+
+function carregarProgresso(){
+  progresso = { aulas:[], checkpoints:{}, prova:null };
+  try{
+    const bruto = localStorage.getItem(chaveProgresso());
+    if(bruto){
+      const p = JSON.parse(bruto);
+      if(p && Array.isArray(p.aulas)) progresso = { aulas:p.aulas, checkpoints:p.checkpoints||{}, prova:(p.prova!==undefined?p.prova:null) };
+    }
+  }catch(e){ /* file:// ou storage bloqueado — segue só em memória */ }
+}
+function gravarLocal(){
+  try{ localStorage.setItem(chaveProgresso(), JSON.stringify(progresso)); }catch(e){ /* ignora */ }
+}
+function salvarProgresso(){
+  gravarLocal();
+  if(typeof agendarSync === 'function') agendarSync();
+}
+function aulaFeita(id){ return progresso.aulas.indexOf(id) !== -1; }
+function marcarAula(id, feito){
+  const i = progresso.aulas.indexOf(id);
+  if(feito && i === -1) progresso.aulas.push(id);
+  if(!feito && i !== -1) progresso.aulas.splice(i,1);
+  salvarProgresso();
+  pintarTopo();
+}
+function pctGeral(){ return TOTAL_AULAS ? Math.round(progresso.aulas.length / TOTAL_AULAS * 100) : 0; }
+function feitasNoModulo(m){ return m.aulas.filter(aulaFeita).length; }
+function moduloCompleto(m){ return feitasNoModulo(m) === m.aulas.length; }
+
+function zerarProgresso(){
+  if(!confirm('Zerar todo o progresso de ' + (usuarioAtual ? primeiroNome(usuarioAtual.nome) : 'você') + ' neste curso? As aulas concluídas e as notas dos checkpoints serão apagadas.')) return;
+  progresso = { aulas:[], checkpoints:{}, prova:null };
+  gravarLocal();
+  if(typeof zerarNaPlanilha === 'function') zerarNaPlanilha();
+  irPara('inicio');
+}
+
+function pintarTopo(){
+  const p = pctGeral();
+  const b = document.getElementById('barraTopo');
+  const t = document.getElementById('pctTopo');
+  if(b) b.style.width = p + '%';
+  if(t) animarNumero(t, p, '%');
+}
+
+/* ---------- navegação ---------- */
+let atual = 'inicio';
+let contexto = null;   // id do módulo / aula / checkpoint em foco
+const historico = [];
+
+function irPara(destino, ref){
+  if(atual) historico.push([atual, contexto]);
+  atual = destino; contexto = ref || null;
+  limparBuscaSilencioso();
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function voltar(){
+  if(historico.length){ const [a,c] = historico.pop(); atual = a; contexto = c; render(); window.scrollTo({top:0}); }
+  else irPara('inicio');
+}
+
+/* ---------- blocos de conteúdo ---------- */
+function renderBlocos(blocos){
+  let h = '';
+  blocos.forEach(b => {
+    if(b.t === 'texto')   h += '<p class="resposta-texto">' + b.v + '</p>';
+    if(b.t === 'caminho') h += '<div class="caminho">' + b.v + '</div>';
+    if(b.t === 'passos'){
+      h += '<div class="passos' + (b.lista ? ' lista' : '') + '">';
+      b.v.forEach(p => h += '<div class="item"><span>' + p + '</span></div>');
+      h += '</div>';
+    }
+    if(b.t === 'figura'){
+      h += '<figure class="figura">' + FIGURAS[b.v] + (b.legenda ? '<figcaption>' + b.legenda + '</figcaption>' : '') + '</figure>';
+    }
+    if(b.t === 'atencao') h += '<div class="atencao"><span class="atencao-titulo">⚡ ' + b.titulo + '</span>' + b.v + '</div>';
+    if(b.t === 'duo'){
+      h += '<div class="duo">';
+      b.v.forEach(l => {
+        h += '<div class="lado"><h4>' + l.h + '</h4>';
+        l.p.forEach(p => h += '<p>' + p + '</p>');
+        h += '</div>';
+      });
+      h += '</div>';
+    }
+    if(b.t === 'tabela'){
+      h += '<table class="tabela"><thead><tr>';
+      b.cab.forEach(c => h += '<th>' + c + '</th>');
+      h += '</tr></thead><tbody>';
+      b.v.forEach(linha => {
+        h += '<tr>';
+        linha.forEach((cel,i) => h += '<td' + (i === 0 ? ' class="cod"' : '') + '>' + cel + '</td>');
+        h += '</tr>';
+      });
+      h += '</tbody></table>';
+    }
+  });
+  return h;
+}
+
+/* ---------- telas ---------- */
+function telaInicio(){
+  const p = pctGeral();
+  const feitas = progresso.aulas.length;
+  const modsOk = MODULOS.filter(moduloCompleto).length;
+
+  let h = '<div class="cartao">';
+  h += '<div class="capa"><div class="emoji">🍔</div>';
+  h += '<h1>Curso de Menu</h1>';
+  h += '<p>Tudo o que a operação de Menu faz no Gattaran, em ordem: do conceito de cardápio de marca até benchmarking, PIC Coverage e common tags. Cada módulo termina com um checkpoint, e no fim há uma prova final.</p>';
+  h += '</div>';
+
+  h += '<div class="anel-bloco">' + anelHtml(p)
+     + '<div class="anel-legenda">'
+     +   '<div class="linha"><b>' + feitas + '</b> de ' + TOTAL_AULAS + ' aulas concluídas</div>'
+     +   '<div class="linha"><b>' + modsOk + '</b> de ' + MODULOS.length + ' módulos completos</div>'
+     +   '<div class="linha"><b>' + (progresso.prova ? progresso.prova.acertos + '/' + progresso.prova.total : '—') + '</b> na prova final</div>'
+     + '</div></div>';
+
+  const prox = ORDEM.find(a => !aulaFeita(a));
+  if(prox){
+    h += '<div class="opcoes" style="margin-top:20px">'
+       + '<button class="btn-opcao destaque" onclick="irPara(\'aula\',\'' + prox + '\')">'
+       + (feitas ? '▶︎ Continuar de onde parei · ' : '▶︎ Começar o curso · ') + AULAS[prox].titulo + '</button></div>';
+  } else {
+    h += '<div class="opcoes" style="margin-top:20px">'
+       + '<button class="btn-opcao destaque" onclick="irPara(\'prova\')">🏅 Todas as aulas concluídas — fazer a prova final</button></div>';
+  }
+
+  h += '<h2 style="font-size:1.05rem;font-weight:700;margin:30px 0 14px">Conteúdo do curso</h2>';
+  h += '<div class="modulos">';
+  MODULOS.forEach((m,i) => {
+    const fe = feitasNoModulo(m), tot = m.aulas.length, ok = fe === tot;
+    const pm = Math.round(fe / tot * 100);
+    h += '<button class="mod-card' + (ok ? ' ok' : '') + '" style="--mod:' + corModulo(i) + '" onclick="irPara(\'modulo\',\'' + m.id + '\')">'
+       + '<div class="ico">' + m.icone + '</div>'
+       + '<div class="corpo">'
+       + '<div class="kicker">Módulo ' + (i+1) + '</div>'
+       + '<h3>' + m.titulo + '</h3>'
+       + '<p>' + m.resumo + '</p>'
+       + '<div class="meta"><div class="mini"><i style="width:' + pm + '%"></i></div>'
+       + '<span class="cont">' + fe + '/' + tot + '</span></div>'
+       + '</div>'
+       + '<span class="selo">' + (ok ? '✅' : '›') + '</span>'
+       + '</button>';
+  });
+  h += '</div>';
+
+  const notaProva = progresso.prova;
+  h += '<button class="cp-card' + (notaProva && notaProva.aprovado ? ' ok' : '') + '" onclick="irPara(\'prova\')" style="margin-top:14px">'
+     + '<span style="font-size:1.2rem">🏅</span>'
+     + '<span class="tit">Prova final'
+     + '<span class="sub">' + (notaProva ? 'Última nota: ' + notaProva.acertos + '/' + notaProva.total + (notaProva.aprovado ? ' · aprovada' : ' · refaça para aprovar') : PROVA.perguntas.length + ' perguntas sobre todo o curso') + '</span></span>'
+     + '<span>›</span></button>';
+
+  h += '</div>';
+  return h;
+}
+
+function telaModulo(){
+  const m = MOD_POR_ID[contexto];
+  if(!m) return telaInicio();
+  const fe = feitasNoModulo(m), tot = m.aulas.length;
+  const cp = CHECKPOINTS[m.checkpoint];
+  const notaCp = progresso.checkpoints[m.checkpoint];
+
+  let h = '<div class="cartao">';
+  h += '<span class="rotulo">Módulo ' + (m._i + 1) + ' de ' + MODULOS.length + '</span>';
+  h += '<h1 class="titulo-pagina">' + m.icone + ' ' + m.titulo + '</h1>';
+  h += '<div class="faixa-mod" style="--mod:' + corModulo(m._i) + '"></div>';
+  h += '<p class="contexto">' + m.resumo + '</p>';
+  h += '<div class="barra-geral" style="margin-bottom:22px"><div class="track"><i style="width:' + Math.round(fe/tot*100) + '%"></i></div>'
+     + '<div class="leg"><span>' + fe + ' de ' + tot + ' aulas</span><span>' + Math.round(fe/tot*100) + '%</span></div></div>';
+
+  h += '<div class="aulas">';
+  m.aulas.forEach((id,i) => {
+    const a = AULAS[id], ok = aulaFeita(id);
+    h += '<button class="aula-item' + (ok ? ' ok' : '') + '" onclick="irPara(\'aula\',\'' + id + '\')">'
+       + '<span class="marca">' + (ok ? '✓' : (i+1)) + '</span>'
+       + '<span class="tit">' + a.titulo + '</span>'
+       + '<span class="seta">›</span></button>';
+  });
+  h += '</div>';
+
+  if(cp){
+    h += '<button class="cp-card' + (notaCp && notaCp.aprovado ? ' ok' : '') + '" onclick="irPara(\'checkpoint\',\'' + m.checkpoint + '\')">'
+       + '<span style="font-size:1.15rem">🎯</span>'
+       + '<span class="tit">Checkpoint do módulo'
+       + '<span class="sub">' + (notaCp ? 'Última nota: ' + notaCp.acertos + '/' + notaCp.total + (notaCp.aprovado ? ' · aprovado' : ' · refaça para aprovar') : cp.perguntas.length + ' perguntas rápidas') + '</span></span>'
+       + '<span>›</span></button>';
+  }
+
+  h += '<div class="acoes-aula">';
+  h += '<button class="btn-nav" onclick="voltar()">← Voltar</button>';
+  h += '<div class="espaco"></div>';
+  const prox = MODULOS[m._i + 1];
+  if(prox) h += '<button class="btn-nav" onclick="irPara(\'modulo\',\'' + prox.id + '\')">Próximo módulo →</button>';
+  h += '<button class="btn-nav preto" onclick="irPara(\'inicio\')">↺ Início do curso</button>';
+  h += '</div></div>';
+  return h;
+}
+
+function telaAula(){
+  const id = contexto, a = AULAS[id];
+  if(!a) return telaInicio();
+  const m = MOD_POR_ID[MOD_DA_AULA[id]];
+  const pos = m.aulas.indexOf(id);
+  const iGlobal = ORDEM.indexOf(id);
+  const ok = aulaFeita(id);
+
+  let h = '<div class="cartao" style="--mod:' + corModulo(m._i) + '">';
+  h += '<span class="rotulo">Aula ' + (pos+1) + ' de ' + m.aulas.length + '</span>';
+  h += '<h1 class="titulo-pagina">' + a.titulo + '</h1>';
+  if(a.objetivo) h += '<div class="objetivo"><b>Nesta aula você vai:</b> ' + a.objetivo + '</div>';
+  h += renderBlocos(a.blocos);
+
+  h += '<div class="acoes-aula">';
+  const ant = ORDEM[iGlobal - 1];
+  h += '<button class="btn-nav" onclick="' + (ant ? 'irPara(\'aula\',\'' + ant + '\')' : 'voltar()') + '">← ' + (ant ? 'Aula anterior' : 'Voltar') + '</button>';
+  h += '<button class="btn-nav' + (ok ? ' feito' : '') + '" onclick="alternarAula(\'' + id + '\')">' + (ok ? '✓ Aula concluída' : 'Marcar como concluída') + '</button>';
+  h += '<div class="espaco"></div>';
+  const prox = ORDEM[iGlobal + 1];
+  if(pos === m.aulas.length - 1){
+    h += '<button class="btn-nav preto" onclick="irPara(\'checkpoint\',\'' + m.checkpoint + '\')">🎯 Checkpoint do módulo</button>';
+  } else if(prox){
+    h += '<button class="btn-nav preto" onclick="irPara(\'aula\',\'' + prox + '\')">Próxima aula →</button>';
+  }
+  h += '</div></div>';
+  return h;
+}
+
+function alternarAula(id){
+  const vaiConcluir = !aulaFeita(id);
+  marcarAula(id, vaiConcluir);
+  render();
+  if(vaiConcluir) comemorarAula(id);
+}
+
+/* ---------- quiz (checkpoint e prova) ---------- */
+let quizEstado = null;
+
+function iniciarQuiz(tipo, chave){
+  const fonte = tipo === 'prova' ? PROVA : CHECKPOINTS[chave];
+  quizEstado = { tipo, chave, fonte, i:0, acertos:0, respondida:false, escolha:-1 };
+}
+
+function telaQuiz(tipo){
+  const chave = tipo === 'prova' ? 'prova' : contexto;
+  if(!quizEstado || quizEstado.chave !== chave || quizEstado.tipo !== tipo) iniciarQuiz(tipo, chave);
+  const q = quizEstado;
+  const perguntas = q.fonte.perguntas;
+
+  let h = '<div class="cartao">';
+
+  if(q.i >= perguntas.length){
+    const total = perguntas.length;
+    const pctAcerto = Math.round(q.acertos / total * 100);
+    const aprovado = pctAcerto >= 70;
+    const msg = aprovado
+      ? (pctAcerto === 100 ? 'Gabaritou! Processo dominado.' : 'Aprovado! Vale reler os pontos que escaparam.')
+      : 'Ainda não deu. Revise as aulas e refaça — a nota de aprovação é 70%.';
+
+    h += '<span class="rotulo ' + (aprovado ? 'verde' : 'escuro') + ' central">Resultado</span>';
+    h += '<div class="quiz-score"><div class="nota">' + q.acertos + '/' + total + '</div>'
+       + '<div class="msg">' + msg + '</div>'
+       + '<div><span class="selo-aprov ' + (aprovado ? 'ok' : 'nao') + '">' + pctAcerto + '% · ' + (aprovado ? 'aprovado' : 'não aprovado') + '</span></div></div>';
+
+    const reg = { acertos:q.acertos, total:total, aprovado:aprovado, quando:new Date().toISOString() };
+    const jaFestejado = q.festejado;
+    if(tipo === 'prova') progresso.prova = reg; else progresso.checkpoints[chave] = reg;
+    salvarProgresso();
+    if(!jaFestejado){ q.festejado = true; setTimeout(() => comemorarQuiz(tipo, aprovado, q.acertos, total), 260); }
+
+    h += '<div class="opcoes" style="margin-top:24px">';
+    h += '<button class="btn-opcao" onclick="refazerQuiz()">↺ Refazer</button>';
+    if(tipo === 'checkpoint'){
+      const m = MODULOS.find(x => x.checkpoint === chave);
+      const prox = MODULOS[m._i + 1];
+      if(prox) h += '<button class="btn-opcao destaque" onclick="irPara(\'modulo\',\'' + prox.id + '\')">Ir para o Módulo ' + (prox._i + 1) + ' · ' + prox.titulo + ' →</button>';
+      else h += '<button class="btn-opcao destaque" onclick="irPara(\'prova\')">🏅 Fazer a prova final →</button>';
+    }
+    h += '<button class="btn-opcao" onclick="irPara(\'inicio\')">↺ Voltar ao início do curso</button>';
+    h += '</div></div>';
+    return h;
+  }
+
+  const p = perguntas[q.i];
+  h += '<span class="rotulo">' + (tipo === 'prova' ? 'Prova final' : 'Checkpoint') + '</span>';
+  h += '<div class="quiz-prog">Pergunta ' + (q.i + 1) + ' de ' + perguntas.length + ' · acertos: ' + q.acertos + '</div>';
+  h += '<div class="quiz-barra"><i style="width:' + Math.round((q.i) / perguntas.length * 100) + '%"></i></div>';
+  h += '<h1 class="pergunta">' + p.q + '</h1>';
+  h += '<div class="quiz-opcoes">';
+  p.opcoes.forEach((op,i) => {
+    let cls = 'quiz-opcao';
+    if(q.respondida){
+      if(i === p.correta) cls += ' correta';
+      else if(i === q.escolha) cls += ' errada';
+    }
+    h += '<button class="' + cls + '"' + (q.respondida ? ' disabled' : '') + ' onclick="responderQuiz(' + i + ')">' + op + '</button>';
+  });
+  h += '</div>';
+
+  if(q.respondida){
+    h += '<div class="quiz-explica">' + (q.escolha === p.correta ? '<strong>Isso! </strong>' : '<strong>Não é essa. </strong>') + p.explica + '</div>';
+    h += '<div class="acoes-aula"><div class="espaco"></div>'
+       + '<button class="btn-nav preto" onclick="proximaQuiz()">' + (q.i + 1 < perguntas.length ? 'Próxima pergunta →' : 'Ver resultado →') + '</button></div>';
+  } else {
+    h += '<div class="acoes-aula"><button class="btn-nav" onclick="voltar()">← Sair do quiz</button></div>';
+  }
+
+  h += '</div>';
+  return h;
+}
+
+function responderQuiz(i){
+  if(quizEstado.respondida) return;
+  quizEstado.escolha = i;
+  quizEstado.respondida = true;
+  if(i === quizEstado.fonte.perguntas[quizEstado.i].correta) quizEstado.acertos++;
+  render();
+}
+function proximaQuiz(){
+  quizEstado.i++; quizEstado.respondida = false; quizEstado.escolha = -1;
+  render(); window.scrollTo({top:0, behavior:'smooth'});
+}
+function refazerQuiz(){
+  iniciarQuiz(quizEstado.tipo, quizEstado.chave);
+  render(); window.scrollTo({top:0});
+}
+
+/* =========================================================
+   CAMADA VISUAL — comemorações, avisos e números animados
+   ========================================================= */
+
+/* Cor de cada módulo, na ordem em que aparecem no menu. */
+const CORES_MOD = ['#FF8A00','#E0457B','#7C5CFF','#0E9F6E','#2D7FF9',
+                   '#D946A0','#F0A500','#14B8A6','#8B5CF6','#EF5A3C'];
+function corModulo(i){ return CORES_MOD[i % CORES_MOD.length]; }
+
+function querMenosMovimento(){
+  try{ return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; }
+}
+
+/* ---------- aviso flutuante ---------- */
+function toast(texto, icone, festa){
+  const caixa = document.getElementById('toasts');
+  if(!caixa) return;
+  const el = document.createElement('div');
+  el.className = 'toast' + (festa ? ' festa' : '');
+  el.innerHTML = '<span class="ic">' + (icone || '✓') + '</span><span>' + texto + '</span>';
+  caixa.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('saindo');
+    setTimeout(() => el.remove(), 320);
+  }, festa ? 3600 : 2400);
+}
+
+/* ---------- confete ---------- */
+function confete(quantidade){
+  if(querMenosMovimento()) return;
+  const caixa = document.getElementById('confete');
+  if(!caixa) return;
+  const cores = ['#FFD100','#FF8A00','#1E9E5A','#2D7FF9','#E0457B','#7C5CFF','#141414'];
+  const n = quantidade || 70;
+  for(let k = 0; k < n; k++){
+    const p = document.createElement('i');
+    p.style.left = Math.random() * 100 + '%';
+    p.style.background = cores[Math.floor(Math.random() * cores.length)];
+    p.style.setProperty('--giro', (Math.random() * 900 - 450) + 'deg');
+    p.style.animationDuration = (2 + Math.random() * 1.6) + 's';
+    p.style.animationDelay = (Math.random() * .45) + 's';
+    p.style.width = (6 + Math.random() * 7) + 'px';
+    p.style.height = (9 + Math.random() * 10) + 'px';
+    if(Math.random() > .7) p.style.borderRadius = '50%';
+    caixa.appendChild(p);
+    setTimeout(() => p.remove(), 4200);
+  }
+}
+
+/* ---------- número que sobe ---------- */
+function animarNumero(el, ate, sufixo){
+  if(!el) return;
+  const de = parseInt(el.dataset.v || '0', 10) || 0;
+  el.dataset.v = ate;
+  if(querMenosMovimento() || de === ate){ el.textContent = ate + (sufixo || ''); return; }
+  const inicio = performance.now(), dur = 700;
+  function passo(agora){
+    const t = Math.min((agora - inicio) / dur, 1);
+    const suave = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(de + (ate - de) * suave) + (sufixo || '');
+    if(t < 1) requestAnimationFrame(passo);
+  }
+  requestAnimationFrame(passo);
+}
+
+/* ---------- anel de progresso ---------- */
+function anelHtml(pct){
+  const r = 55, c = 2 * Math.PI * r;
+  const off = c * (1 - pct / 100);
+  return '<div class="anel">'
+    + '<svg viewBox="0 0 132 132" aria-hidden="true">'
+    +   '<defs><linearGradient id="gradAnel" x1="0" y1="0" x2="1" y2="1">'
+    +     '<stop offset="0%" stop-color="#FF8A00"/><stop offset="100%" stop-color="#FFD100"/>'
+    +   '</linearGradient></defs>'
+    +   '<circle class="trilho" cx="66" cy="66" r="' + r + '"></circle>'
+    +   '<circle class="valor" id="anelValor" cx="66" cy="66" r="' + r + '" '
+    +     'stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + c.toFixed(1) + '"></circle>'
+    + '</svg>'
+    + '<div class="centro"><span class="n" id="anelPct" data-v="0">0%</span><span class="l">do curso</span></div>'
+    + '</div>';
+}
+
+/* Chamado depois que a tela entra no DOM, para a animação partir do zero. */
+function animarAnel(pct){
+  const arco = document.getElementById('anelValor');
+  const txt = document.getElementById('anelPct');
+  if(!arco) return;
+  const r = 55, c = 2 * Math.PI * r;
+  const aplicar = () => { arco.style.strokeDashoffset = (c * (1 - pct / 100)).toFixed(1); };
+  if(querMenosMovimento()) aplicar(); else requestAnimationFrame(() => setTimeout(aplicar, 60));
+  animarNumero(txt, pct, '%');
+}
+
+/* ---------- comemorações ---------- */
+function comemorarAula(id){
+  const m = MOD_POR_ID[MOD_DA_AULA[id]];
+  if(m && moduloCompleto(m)){
+    confete(90);
+    toast('<b>Módulo ' + (m._i + 1) + ' concluído!</b> ' + m.titulo, '🎉', true);
+    return;
+  }
+  const faltam = TOTAL_AULAS - progresso.aulas.length;
+  toast(faltam ? 'Aula concluída · faltam <b>' + faltam + '</b>' : 'Aula concluída!', '✓');
+}
+
+function comemorarQuiz(tipo, aprovado, acertos, total){
+  if(tipo === 'prova'){
+    if(aprovado){
+      confete(140);
+      toast('<b>Prova final aprovada!</b> ' + acertos + '/' + total + ' — veja sua posição no ranking.', '🏅', true);
+    }else{
+      toast('Prova concluída: ' + acertos + '/' + total + '. Revise e tente de novo.', '📘');
+    }
+    return;
+  }
+  if(aprovado){
+    confete(60);
+    toast('<b>Checkpoint aprovado!</b> ' + acertos + '/' + total, '🎯', true);
+  }else{
+    toast('Checkpoint: ' + acertos + '/' + total + '. Vale revisar as aulas.', '📘');
+  }
+}
+
+const FIGURAS = {
+  'niveis': `<svg viewBox="0 0 660 258" role="img" aria-labelledby="fgNiveis" xmlns="http://www.w3.org/2000/svg"><title id="fgNiveis">À esquerda, um cardápio de marca alimentando três lojas iguais. À direita, três lojas com cardápios próprios e diferentes.</title>
+<g font-family="Poppins, sans-serif">
+  <line x1="330" y1="18" x2="330" y2="238" stroke="rgba(20,20,20,.14)" stroke-width="1.5" stroke-dasharray="5 5"/>
+
+  <text x="155" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="var(--preto)">Nível Marca</text>
+  <rect x="100" y="36" width="110" height="38" rx="10" fill="var(--mod,#FF8A00)"/>
+  <text x="155" y="53" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">CARDÁPIO</text>
+  <text x="155" y="66" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">DA MARCA</text>
+  <path d="M155 74 V100 M75 100 H235 M75 100 V128 M155 100 V128 M235 100 V128"
+        stroke="var(--mod,#FF8A00)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <g>
+    <rect x="40" y="128" width="70" height="56" rx="9" fill="#fff" stroke="rgba(20,20,20,.2)" stroke-width="1.5"/>
+    <rect x="52" y="142" width="46" height="5" rx="2.5" fill="var(--mod,#FF8A00)"/>
+    <rect x="52" y="153" width="46" height="5" rx="2.5" fill="var(--mod,#FF8A00)"/>
+    <rect x="52" y="164" width="30" height="5" rx="2.5" fill="var(--mod,#FF8A00)"/>
+    <text x="75" y="198" text-anchor="middle" font-size="10.5" fill="#6B6B6B">Loja 1</text>
+  </g>
+  <g>
+    <rect x="120" y="128" width="70" height="56" rx="9" fill="#fff" stroke="rgba(20,20,20,.2)" stroke-width="1.5"/>
+    <rect x="132" y="142" width="46" height="5" rx="2.5" fill="var(--mod,#FF8A00)"/>
+    <rect x="132" y="153" width="46" height="5" rx="2.5" fill="var(--mod,#FF8A00)"/>
+    <rect x="132" y="164" width="30" height="5" rx="2.5" fill="var(--mod,#FF8A00)"/>
+    <text x="155" y="198" text-anchor="middle" font-size="10.5" fill="#6B6B6B">Loja 2</text>
+  </g>
+  <g>
+    <rect x="200" y="128" width="70" height="56" rx="9" fill="#fff" stroke="rgba(20,20,20,.2)" stroke-width="1.5"/>
+    <rect x="212" y="142" width="46" height="5" rx="2.5" fill="var(--mod,#FF8A00)"/>
+    <rect x="212" y="153" width="46" height="5" rx="2.5" fill="var(--mod,#FF8A00)"/>
+    <rect x="212" y="164" width="30" height="5" rx="2.5" fill="var(--mod,#FF8A00)"/>
+    <text x="235" y="198" text-anchor="middle" font-size="10.5" fill="#6B6B6B">Loja 3</text>
+  </g>
+  <rect x="34" y="212" width="242" height="26" rx="8" fill="#E6F6EC"/>
+  <text x="155" y="229" text-anchor="middle" font-size="11" font-weight="600" fill="#15804a">Um cardápio só · todas iguais · fácil de manter</text>
+
+  <text x="490" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="var(--preto)">Nível Loja</text>
+  <g>
+    <rect x="378" y="36" width="54" height="30" rx="8" fill="#9CA3AF"/>
+    <path d="M405 66 V128" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+    <rect x="370" y="128" width="70" height="56" rx="9" fill="#fff" stroke="rgba(20,20,20,.2)" stroke-width="1.5"/>
+    <rect x="382" y="142" width="46" height="5" rx="2.5" fill="#9CA3AF"/>
+    <rect x="382" y="153" width="34" height="5" rx="2.5" fill="#9CA3AF"/>
+    <text x="405" y="198" text-anchor="middle" font-size="10.5" fill="#6B6B6B">Loja 1</text>
+  </g>
+  <g>
+    <rect x="458" y="36" width="54" height="30" rx="8" fill="#6B7280"/>
+    <path d="M485 66 V128" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+    <rect x="450" y="128" width="70" height="56" rx="9" fill="#fff" stroke="rgba(20,20,20,.2)" stroke-width="1.5"/>
+    <rect x="462" y="142" width="30" height="5" rx="2.5" fill="#6B7280"/>
+    <rect x="462" y="153" width="46" height="5" rx="2.5" fill="#6B7280"/>
+    <rect x="462" y="164" width="40" height="5" rx="2.5" fill="#6B7280"/>
+    <text x="485" y="198" text-anchor="middle" font-size="10.5" fill="#6B6B6B">Loja 2</text>
+  </g>
+  <g>
+    <rect x="538" y="36" width="54" height="30" rx="8" fill="#B9BEC7"/>
+    <path d="M565 66 V128" stroke="#B9BEC7" stroke-width="2" stroke-linecap="round"/>
+    <rect x="530" y="128" width="70" height="56" rx="9" fill="#fff" stroke="rgba(20,20,20,.2)" stroke-width="1.5"/>
+    <rect x="542" y="142" width="40" height="5" rx="2.5" fill="#B9BEC7"/>
+    <rect x="542" y="153" width="24" height="5" rx="2.5" fill="#B9BEC7"/>
+    <text x="565" y="198" text-anchor="middle" font-size="10.5" fill="#6B6B6B">Loja 3</text>
+  </g>
+  <rect x="368" y="212" width="244" height="26" rx="8" fill="#FBEAEA"/>
+  <text x="490" y="229" text-anchor="middle" font-size="11" font-weight="600" fill="#B13434">Cada loja com o seu · difícil de manter</text>
+</g></svg>`,
+  'etapas': `<svg viewBox="0 0 660 164" role="img" aria-labelledby="fgEtapas" xmlns="http://www.w3.org/2000/svg"><title id="fgEtapas">Três etapas em sequência: criar o cardápio na base, aplicar na marca e sincronizar nas lojas.</title>
+<g font-family="Poppins, sans-serif">
+  <g>
+    <rect x="8" y="26" width="186" height="102" rx="14" fill="#fff" stroke="var(--mod,#FF8A00)" stroke-width="2"/>
+    <circle cx="36" cy="54" r="15" fill="var(--mod,#FF8A00)"/>
+    <text x="36" y="59" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">1</text>
+    <text x="60" y="59" font-size="12.5" font-weight="700" fill="var(--preto)">Criar o cardápio</text>
+    <text x="24" y="84" font-size="11" fill="#6B6B6B">Numa loja da marca, pelo</text>
+    <text x="24" y="100" font-size="11" fill="#6B6B6B">link, e publicar no</text>
+    <text x="24" y="116" font-size="11" font-weight="700" fill="var(--preto)">Lançamento</text>
+  </g>
+  <path d="M202 77 H222" stroke="var(--mod,#FF8A00)" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M216 71 L224 77 L216 83 Z" fill="var(--mod,#FF8A00)"/>
+  <g>
+    <rect x="232" y="26" width="186" height="102" rx="14" fill="#fff" stroke="var(--mod,#FF8A00)" stroke-width="2"/>
+    <circle cx="260" cy="54" r="15" fill="var(--mod,#FF8A00)"/>
+    <text x="260" y="59" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">2</text>
+    <text x="284" y="59" font-size="12.5" font-weight="700" fill="var(--preto)">Aplicar na marca</text>
+    <text x="248" y="84" font-size="11" fill="#6B6B6B">Mais funções →</text>
+    <text x="248" y="100" font-size="11" font-weight="700" fill="var(--preto)">Gerar itens e cardápio</text>
+    <text x="248" y="116" font-size="11" fill="#6B6B6B">(leva 3 a 5 minutos)</text>
+  </g>
+  <path d="M426 77 H446" stroke="var(--mod,#FF8A00)" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M440 71 L448 77 L440 83 Z" fill="var(--mod,#FF8A00)"/>
+  <g>
+    <rect x="456" y="26" width="196" height="102" rx="14" fill="#fff" stroke="var(--mod,#FF8A00)" stroke-width="2"/>
+    <circle cx="484" cy="54" r="15" fill="var(--mod,#FF8A00)"/>
+    <text x="484" y="59" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">3</text>
+    <text x="508" y="59" font-size="12.5" font-weight="700" fill="var(--preto)">Sincronizar</text>
+    <text x="472" y="84" font-size="11" fill="#6B6B6B">Levar o cardápio da</text>
+    <text x="472" y="100" font-size="11" fill="#6B6B6B">marca até as lojas</text>
+    <text x="472" y="116" font-size="11" fill="#6B6B6B">afiliadas a ela</text>
+  </g>
+  <text x="330" y="152" text-anchor="middle" font-size="11" fill="#6B6B6B">Sem o passo 1 publicado, o benchmarking não começa.</text>
+</g></svg>`,
+  'metodos': `<svg viewBox="0 0 660 246" role="img" aria-labelledby="fgMetodos" xmlns="http://www.w3.org/2000/svg"><title id="fgMetodos">Os três métodos de sincronização e o que cada um envia: o menu inteiro, uma categoria com seus itens, ou itens avulsos.</title>
+<g font-family="Poppins, sans-serif">
+  <g>
+    <text x="106" y="18" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--preto)">Abrir nova loja /</text>
+    <text x="106" y="33" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--preto)">Alterar menu</text>
+    <rect x="46" y="44" width="120" height="104" rx="11" fill="var(--mod,#FF8A00)" opacity=".16"/>
+    <rect x="46" y="44" width="120" height="104" rx="11" fill="none" stroke="var(--mod,#FF8A00)" stroke-width="2"/>
+    <rect x="60" y="58" width="60" height="7" rx="3.5" fill="var(--mod,#FF8A00)"/>
+    <rect x="60" y="73" width="92" height="6" rx="3" fill="var(--mod,#FF8A00)" opacity=".55"/>
+    <rect x="60" y="86" width="92" height="6" rx="3" fill="var(--mod,#FF8A00)" opacity=".55"/>
+    <rect x="60" y="103" width="46" height="7" rx="3.5" fill="var(--mod,#FF8A00)"/>
+    <rect x="60" y="118" width="92" height="6" rx="3" fill="var(--mod,#FF8A00)" opacity=".55"/>
+    <rect x="60" y="131" width="92" height="6" rx="3" fill="var(--mod,#FF8A00)" opacity=".55"/>
+    <path d="M106 156 V176" stroke="var(--mod,#FF8A00)" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M100 170 L106 178 L112 170 Z" fill="var(--mod,#FF8A00)"/>
+    <rect x="71" y="184" width="70" height="34" rx="9" fill="#fff" stroke="rgba(20,20,20,.2)" stroke-width="1.5"/>
+    <text x="106" y="205" text-anchor="middle" font-size="10.5" fill="#6B6B6B">a loja</text>
+    <text x="106" y="238" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--mod,#FF8A00)">o menu inteiro</text>
+  </g>
+  <g>
+    <text x="330" y="18" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--preto)">Adicionar / Atualizar</text>
+    <text x="330" y="33" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--preto)">categorias</text>
+    <rect x="270" y="44" width="120" height="104" rx="11" fill="#fff" stroke="rgba(20,20,20,.18)" stroke-width="2"/>
+    <rect x="284" y="58" width="60" height="7" rx="3.5" fill="#C9CDD4"/>
+    <rect x="284" y="73" width="92" height="6" rx="3" fill="#DDE0E5"/>
+    <rect x="284" y="86" width="92" height="6" rx="3" fill="#DDE0E5"/>
+    <rect x="276" y="96" width="108" height="46" rx="8" fill="var(--mod,#FF8A00)" opacity=".16"/>
+    <rect x="284" y="103" width="46" height="7" rx="3.5" fill="var(--mod,#FF8A00)"/>
+    <rect x="284" y="118" width="92" height="6" rx="3" fill="var(--mod,#FF8A00)" opacity=".6"/>
+    <rect x="284" y="131" width="92" height="6" rx="3" fill="var(--mod,#FF8A00)" opacity=".6"/>
+    <path d="M330 156 V176" stroke="var(--mod,#FF8A00)" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M324 170 L330 178 L336 170 Z" fill="var(--mod,#FF8A00)"/>
+    <rect x="295" y="184" width="70" height="34" rx="9" fill="#fff" stroke="rgba(20,20,20,.2)" stroke-width="1.5"/>
+    <text x="330" y="205" text-anchor="middle" font-size="10.5" fill="#6B6B6B">a loja</text>
+    <text x="330" y="238" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--mod,#FF8A00)">a categoria + seus itens</text>
+  </g>
+  <g>
+    <text x="554" y="18" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--preto)">Adicionar / Atualizar</text>
+    <text x="554" y="33" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--preto)">itens</text>
+    <rect x="494" y="44" width="120" height="104" rx="11" fill="#fff" stroke="rgba(20,20,20,.18)" stroke-width="2"/>
+    <rect x="508" y="58" width="60" height="7" rx="3.5" fill="#C9CDD4"/>
+    <rect x="500" y="68" width="108" height="16" rx="6" fill="var(--mod,#FF8A00)" opacity=".16"/>
+    <rect x="508" y="73" width="92" height="6" rx="3" fill="var(--mod,#FF8A00)"/>
+    <rect x="508" y="86" width="92" height="6" rx="3" fill="#DDE0E5"/>
+    <rect x="508" y="103" width="46" height="7" rx="3.5" fill="#C9CDD4"/>
+    <rect x="508" y="118" width="92" height="6" rx="3" fill="#DDE0E5"/>
+    <rect x="500" y="126" width="108" height="16" rx="6" fill="var(--mod,#FF8A00)" opacity=".16"/>
+    <rect x="508" y="131" width="92" height="6" rx="3" fill="var(--mod,#FF8A00)"/>
+    <path d="M554 156 V176" stroke="var(--mod,#FF8A00)" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M548 170 L554 178 L560 170 Z" fill="var(--mod,#FF8A00)"/>
+    <rect x="519" y="184" width="70" height="34" rx="9" fill="#fff" stroke="rgba(20,20,20,.2)" stroke-width="1.5"/>
+    <text x="554" y="205" text-anchor="middle" font-size="10.5" fill="#6B6B6B">a loja</text>
+    <text x="554" y="238" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--mod,#FF8A00)">só os itens escolhidos</text>
+  </g>
+</g></svg>`,
+  'bench': `<svg viewBox="0 0 660 250" role="img" aria-labelledby="fgBench" xmlns="http://www.w3.org/2000/svg"><title id="fgBench">Comparação de preços entre iFood e 99: dentro do desconto o item vende, acima do acordado ele é bloqueado.</title>
+<g font-family="Poppins, sans-serif">
+  <text x="165" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#15804a">Dentro do acordo</text>
+  <g>
+    <rect x="56" y="92" width="62" height="104" rx="8" fill="#C9CDD4"/>
+    <text x="87" y="84" text-anchor="middle" font-size="12" font-weight="700" fill="var(--preto)">R$ 30</text>
+    <text x="87" y="212" text-anchor="middle" font-size="10.5" fill="#6B6B6B">iFood</text>
+    <rect x="140" y="122" width="62" height="74" rx="8" fill="var(--mod,#FF8A00)"/>
+    <text x="171" y="114" text-anchor="middle" font-size="12" font-weight="700" fill="var(--preto)">R$ 27</text>
+    <text x="171" y="212" text-anchor="middle" font-size="10.5" fill="#6B6B6B">99</text>
+    <path d="M124 92 V122" stroke="#15804a" stroke-width="2" stroke-dasharray="4 3"/>
+    <rect x="212" y="138" width="56" height="22" rx="11" fill="#E6F6EC"/>
+    <text x="240" y="153" text-anchor="middle" font-size="11" font-weight="700" fill="#15804a">−10%</text>
+    <rect x="56" y="224" width="212" height="22" rx="8" fill="#E6F6EC"/>
+    <text x="162" y="239" text-anchor="middle" font-size="11" font-weight="600" fill="#15804a">Item disponível para venda</text>
+  </g>
+
+  <line x1="330" y1="14" x2="330" y2="246" stroke="rgba(20,20,20,.14)" stroke-width="1.5" stroke-dasharray="5 5"/>
+
+  <text x="495" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#B13434">Acima do acordado</text>
+  <g>
+    <rect x="386" y="92" width="62" height="104" rx="8" fill="#C9CDD4"/>
+    <text x="417" y="84" text-anchor="middle" font-size="12" font-weight="700" fill="var(--preto)">R$ 30</text>
+    <text x="417" y="212" text-anchor="middle" font-size="10.5" fill="#6B6B6B">iFood</text>
+    <rect x="470" y="62" width="62" height="134" rx="8" fill="#D64545"/>
+    <text x="501" y="54" text-anchor="middle" font-size="12" font-weight="700" fill="#B13434">R$ 33</text>
+    <text x="501" y="212" text-anchor="middle" font-size="10.5" fill="#6B6B6B">99</text>
+    <rect x="542" y="108" width="74" height="22" rx="11" fill="#FBEAEA"/>
+    <text x="579" y="123" text-anchor="middle" font-size="10.5" font-weight="700" fill="#B13434">item mais caro</text>
+    <rect x="386" y="224" width="230" height="22" rx="8" fill="#FBEAEA"/>
+    <text x="501" y="239" text-anchor="middle" font-size="11" font-weight="600" fill="#B13434">Bloqueado até o preço ser ajustado</text>
+  </g>
+</g></svg>`,
+  'grupos': `<svg viewBox="0 0 660 240" role="img" aria-labelledby="fgGrupos" xmlns="http://www.w3.org/2000/svg"><title id="fgGrupos">Um item principal com dois grupos de adicionais ligados a ele; o preço dos adicionais se edita dentro do grupo.</title>
+<g font-family="Poppins, sans-serif">
+  <rect x="24" y="78" width="150" height="76" rx="13" fill="var(--mod,#FF8A00)"/>
+  <text x="99" y="106" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">Item principal</text>
+  <text x="99" y="126" text-anchor="middle" font-size="11" fill="#fff" opacity=".9">ex.: X-Burger</text>
+  <text x="99" y="170" text-anchor="middle" font-size="10.5" fill="#6B6B6B">vive no cardápio</text>
+
+  <path d="M174 116 H214 V56 H246" stroke="var(--mod,#FF8A00)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M240 50 L250 56 L240 62 Z" fill="var(--mod,#FF8A00)"/>
+  <path d="M174 116 H214 V178 H246" stroke="var(--mod,#FF8A00)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M240 172 L250 178 L240 184 Z" fill="var(--mod,#FF8A00)"/>
+
+  <rect x="252" y="22" width="238" height="68" rx="12" fill="#fff" stroke="var(--mod,#FF8A00)" stroke-width="2"/>
+  <text x="268" y="44" font-size="11.5" font-weight="700" fill="var(--preto)">Grupo: Adicionais</text>
+  <rect x="268" y="56" width="66" height="22" rx="11" fill="var(--mod,#FF8A00)" opacity=".16"/>
+  <text x="301" y="71" text-anchor="middle" font-size="10" fill="var(--preto)">Bacon</text>
+  <rect x="342" y="56" width="66" height="22" rx="11" fill="var(--mod,#FF8A00)" opacity=".16"/>
+  <text x="375" y="71" text-anchor="middle" font-size="10" fill="var(--preto)">Cheddar</text>
+  <rect x="416" y="56" width="58" height="22" rx="11" fill="var(--mod,#FF8A00)" opacity=".16"/>
+  <text x="445" y="71" text-anchor="middle" font-size="10" fill="var(--preto)">Ovo</text>
+
+  <rect x="252" y="144" width="238" height="68" rx="12" fill="#fff" stroke="var(--mod,#FF8A00)" stroke-width="2"/>
+  <text x="268" y="166" font-size="11.5" font-weight="700" fill="var(--preto)">Grupo: Bebidas</text>
+  <rect x="268" y="178" width="78" height="22" rx="11" fill="var(--mod,#FF8A00)" opacity=".16"/>
+  <text x="307" y="193" text-anchor="middle" font-size="10" fill="var(--preto)">Refrigerante</text>
+  <rect x="354" y="178" width="58" height="22" rx="11" fill="var(--mod,#FF8A00)" opacity=".16"/>
+  <text x="383" y="193" text-anchor="middle" font-size="10" fill="var(--preto)">Suco</text>
+
+  <path d="M494 56 H520 M494 178 H520" stroke="#D97400" stroke-width="2" stroke-dasharray="4 3"/>
+  <rect x="524" y="86" width="126" height="68" rx="12" fill="#FFF8EC" stroke="#D97400" stroke-width="1.5"/>
+  <text x="587" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="var(--preto)">O preço do</text>
+  <text x="587" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="var(--preto)">adicional se edita</text>
+  <text x="587" y="142" text-anchor="middle" font-size="11" font-weight="700" fill="#B36A00">dentro do grupo</text>
+</g></svg>`,
+  'pic': `<svg viewBox="0 0 660 148" role="img" aria-labelledby="fgPic" xmlns="http://www.w3.org/2000/svg"><title id="fgPic">Cinquenta itens do cardápio em duas fileiras, quase todos com foto, ilustrando a meta de 98 por cento.</title>
+<g font-family="Poppins, sans-serif">
+  <text x="330" y="22" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--preto)">Meta: 98% dos itens do menu com foto</text>
+  <rect x="20" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="26.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M23 56 L28 50 L32 56 L34 53 L37 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="45" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="51.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M48 56 L53 50 L57 56 L59 53 L62 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="70" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="76.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M73 56 L78 50 L82 56 L84 53 L87 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="95" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="101.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M98 56 L103 50 L107 56 L109 53 L112 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="120" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="126.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M123 56 L128 50 L132 56 L134 53 L137 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="145" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="151.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M148 56 L153 50 L157 56 L159 53 L162 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="170" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="176.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M173 56 L178 50 L182 56 L184 53 L187 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="195" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="201.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M198 56 L203 50 L207 56 L209 53 L212 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="220" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="226.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M223 56 L228 50 L232 56 L234 53 L237 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="245" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="251.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M248 56 L253 50 L257 56 L259 53 L262 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="270" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="276.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M273 56 L278 50 L282 56 L284 53 L287 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="295" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="301.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M298 56 L303 50 L307 56 L309 53 L312 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="320" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="326.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M323 56 L328 50 L332 56 L334 53 L337 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="345" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="351.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M348 56 L353 50 L357 56 L359 53 L362 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="370" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="376.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M373 56 L378 50 L382 56 L384 53 L387 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="395" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="401.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M398 56 L403 50 L407 56 L409 53 L412 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="420" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="426.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M423 56 L428 50 L432 56 L434 53 L437 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="445" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="451.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M448 56 L453 50 L457 56 L459 53 L462 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="470" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="476.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M473 56 L478 50 L482 56 L484 53 L487 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="495" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="501.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M498 56 L503 50 L507 56 L509 53 L512 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="520" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="526.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M523 56 L528 50 L532 56 L534 53 L537 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="545" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="551.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M548 56 L553 50 L557 56 L559 53 L562 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="570" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="576.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M573 56 L578 50 L582 56 L584 53 L587 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="595" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="601.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M598 56 L603 50 L607 56 L609 53 L612 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="620" y="40" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="626.5" cy="47" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M623 56 L628 50 L632 56 L634 53 L637 56 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="20" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="26.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M23 81 L28 75 L32 81 L34 78 L37 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="45" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="51.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M48 81 L53 75 L57 81 L59 78 L62 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="70" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="76.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M73 81 L78 75 L82 81 L84 78 L87 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="95" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="101.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M98 81 L103 75 L107 81 L109 78 L112 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="120" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="126.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M123 81 L128 75 L132 81 L134 78 L137 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="145" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="151.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M148 81 L153 75 L157 81 L159 78 L162 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="170" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="176.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M173 81 L178 75 L182 81 L184 78 L187 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="195" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="201.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M198 81 L203 75 L207 81 L209 78 L212 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="220" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="226.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M223 81 L228 75 L232 81 L234 78 L237 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="245" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="251.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M248 81 L253 75 L257 81 L259 78 L262 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="270" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="276.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M273 81 L278 75 L282 81 L284 78 L287 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="295" y="65" width="20" height="20" rx="5" fill="#FBEAEA" stroke="#D64545" stroke-width="1.6" stroke-dasharray="3 2"/>
+  <text x="305" y="79" text-anchor="middle" font-size="11" font-weight="700" fill="#D64545">?</text>
+  <rect x="320" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="326.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M323 81 L328 75 L332 81 L334 78 L337 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="345" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="351.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M348 81 L353 75 L357 81 L359 78 L362 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="370" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="376.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M373 81 L378 75 L382 81 L384 78 L387 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="395" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="401.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M398 81 L403 75 L407 81 L409 78 L412 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="420" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="426.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M423 81 L428 75 L432 81 L434 78 L437 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="445" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="451.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M448 81 L453 75 L457 81 L459 78 L462 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="470" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="476.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M473 81 L478 75 L482 81 L484 78 L487 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="495" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="501.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M498 81 L503 75 L507 81 L509 78 L512 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="520" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="526.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M523 81 L528 75 L532 81 L534 78 L537 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="545" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="551.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M548 81 L553 75 L557 81 L559 78 L562 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="570" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="576.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M573 81 L578 75 L582 81 L584 78 L587 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="595" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="601.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M598 81 L603 75 L607 81 L609 78 L612 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="620" y="65" width="20" height="20" rx="5" fill="var(--mod,#FF8A00)" opacity=".22"/>
+  <circle cx="626.5" cy="72" r="2.4" fill="var(--mod,#FF8A00)"/>
+  <path d="M623 81 L628 75 L632 81 L634 78 L637 81 Z" fill="var(--mod,#FF8A00)"/>
+  <rect x="182" y="100" width="124" height="26" rx="8" fill="#E6F6EC"/>
+  <text x="244" y="117" text-anchor="middle" font-size="11" font-weight="700" fill="#15804a">49 com foto</text>
+  <rect x="322" y="100" width="156" height="26" rx="8" fill="#FBEAEA"/>
+  <text x="400" y="117" text-anchor="middle" font-size="11" font-weight="700" fill="#B13434">1 sem foto · corrigir</text>
+</g></svg>`,
+};
+
+/* ---------- ranking ---------- */
+let rankingDados = null;
+let rankingEstado = 'vazio';   // vazio | carregando | ok | erro
+let rankingErro = '';
+
+async function carregarRanking(forcar){
+  if(rankingEstado === 'carregando') return;
+  if(rankingEstado === 'ok' && !forcar) return;
+  rankingEstado = 'carregando'; render();
+  try{
+    rankingDados = await buscarRanking();
+    rankingEstado = 'ok';
+  }catch(e){
+    rankingErro = (typeof traduzirErro === 'function') ? traduzirErro(e) : String(e);
+    rankingEstado = 'erro';
+  }
+  render();
+}
+
+const MEDALHAS = ['🥇','🥈','🥉'];
+
+function botoesRanking(comAtualizar){
+  let h = '<div class="acoes-aula"><button class="btn-nav" onclick="voltar()">← Voltar</button>';
+  if(comAtualizar) h += '<button class="btn-nav" onclick="carregarRanking(true)">↻ Atualizar</button>';
+  h += '<div class="espaco"></div><button class="btn-nav preto" onclick="irPara(\'inicio\')">↺ Início do curso</button></div>';
+  return h;
+}
+
+function telaRanking(){
+  let h = '<div class="cartao">';
+  h += '<span class="rotulo central">Classificação</span>';
+  h += '<h1 class="titulo-pagina" style="text-align:center">🏆 Ranking do curso</h1>';
+
+  if(!syncLigado()){
+    h += '<p class="contexto" style="text-align:center">O ranking depende da planilha compartilhada, que não está configurada neste arquivo.</p>';
+    h += '<div class="atencao"><span class="atencao-titulo">⚡ Como ligar</span>Cole a URL do App da Web na linha <strong>URL_PROGRESSO</strong>, no começo do bloco de código do arquivo, e publique de novo.</div>';
+    return h + botoesRanking(false) + '</div>';
+  }
+
+  if(rankingEstado === 'carregando'){
+    h += '<p class="contexto" style="text-align:center">Carregando a classificação…</p>';
+    return h + botoesRanking(false) + '</div>';
+  }
+
+  if(rankingEstado === 'erro'){
+    h += '<div class="atencao"><span class="atencao-titulo">⚡ Não foi possível carregar</span>' + (rankingErro || 'Erro desconhecido.') + '</div>';
+    return h + botoesRanking(true) + '</div>';
+  }
+
+  const d = rankingDados || { lista:[], total:0, semProva:0, minhaPos:0 };
+
+  if(!d.total){
+    h += '<p class="contexto" style="text-align:center">Ninguém concluiu a prova final ainda. Seja a primeira pessoa a entrar no ranking.</p>';
+    h += '<div class="opcoes"><button class="btn-opcao destaque" onclick="irPara(\'prova\')">🏅 Fazer a prova final →</button></div>';
+    return h + botoesRanking(true) + '</div>';
+  }
+
+  h += '<p class="contexto" style="text-align:center">' + d.total + (d.total === 1 ? ' pessoa já concluiu' : ' pessoas já concluíram') + ' a prova final'
+     + (d.semProva ? ' · ' + d.semProva + (d.semProva === 1 ? ' ainda não fez' : ' ainda não fizeram') : '') + '.</p>';
+
+  const podio = d.lista.filter(l => l.pos <= 3);
+  if(podio.length){
+    h += '<div class="podio">';
+    podio.forEach(l => {
+      h += '<div class="podio-card lugar' + l.pos + (l.eu ? ' eu' : '') + '">'
+         + '<div class="medalha">' + MEDALHAS[l.pos-1] + '</div>'
+         + '<div class="pnome">' + l.nome + (l.eu ? ' <span class="voce">você</span>' : '') + '</div>'
+         + '<div class="ppontos">' + l.pontos + '<span>pts</span></div>'
+         + '<div class="pprova">prova: ' + l.acertos + '/' + l.total + '</div>'
+         + '</div>';
+    });
+    h += '</div>';
+  }
+
+  const resto = d.lista.filter(l => l.pos > 3);
+  if(resto.length){
+    h += '<div class="tabela-rank">';
+    resto.forEach(l => {
+      h += '<div class="linha-rank' + (l.eu ? ' eu' : '') + '">'
+         + '<span class="pos">' + l.pos + 'º</span>'
+         + '<span class="quem">' + (l.eu ? (l.nome + ' <span class="voce">você</span>') : 'Participante') + '</span>'
+         + (l.eu && l.acertos !== null ? '<span class="det">prova ' + l.acertos + '/' + l.total + '</span>' : '')
+         + '<span class="pts">' + l.pontos + '</span>'
+         + '</div>';
+    });
+    h += '</div>';
+  }
+
+  if(!d.minhaPos){
+    h += '<div class="atencao" style="margin-top:18px"><span class="atencao-titulo">⚡ Você ainda não está no ranking</span>'
+       + 'Só entra na classificação quem conclui a <strong>prova final</strong>.</div>'
+       + '<div class="opcoes"><button class="btn-opcao destaque" onclick="irPara(\'prova\')">🏅 Fazer a prova final →</button></div>';
+  }
+
+  h += '<div class="como-pontua"><strong>Como a pontuação é calculada</strong>'
+     + '<span><b>60</b> pontos · acertos na prova final</span>'
+     + '<span><b>25</b> pontos · checkpoints aprovados</span>'
+     + '<span><b>15</b> pontos · aulas concluídas</span>'
+     + '<em>Empate vai para quem concluiu a prova primeiro. Fora do pódio, cada pessoa enxerga apenas a própria posição.</em></div>';
+
+  return h + botoesRanking(true) + '</div>';
+}
+
+/* ---------- glossário ---------- */
+function telaGlossario(){
+  let h = '<div class="cartao">';
+  h += '<span class="rotulo central">Referência rápida</span>';
+  h += '<h1 class="titulo-pagina" style="text-align:center">🔤 Glossário de Menu</h1>';
+  h += '<p class="contexto" style="text-align:center">Os termos e siglas que mais aparecem no dia a dia de cardápio.</p>';
+  GLOSSARIO.slice().sort((a,b) => a[0].localeCompare(b[0],'pt')).forEach(([t,d]) => {
+    h += '<div class="gloss-item"><div class="gloss-termo">' + t + '</div><div class="gloss-def">' + d + '</div></div>';
+  });
+  h += '<div class="acoes-aula"><button class="btn-nav" onclick="voltar()">← Voltar</button>'
+     + '<div class="espaco"></div><button class="btn-nav preto" onclick="irPara(\'inicio\')">↺ Início do curso</button></div>';
+  h += '</div>';
+  return h;
+}
+
+/* ---------- busca ---------- */
+function textoDaAula(id){
+  const a = AULAS[id];
+  let t = a.titulo + ' ' + (a.objetivo || '');
+  a.blocos.forEach(b => {
+    if(typeof b.v === 'string') t += ' ' + b.v;
+    else if(Array.isArray(b.v)){
+      b.v.forEach(x => {
+        if(typeof x === 'string') t += ' ' + x;
+        else if(x && x.p) t += ' ' + x.h + ' ' + x.p.join(' ');
+        else if(Array.isArray(x)) t += ' ' + x.join(' ');
+      });
+    }
+    if(b.titulo) t += ' ' + b.titulo;
+  });
+  return t.replace(/<[^>]+>/g,' ').toLowerCase();
+}
+const INDICE = ORDEM.map(id => ({ id, txt:textoDaAula(id) }));
+
+function telaBusca(termo){
+  const t = termo.trim().toLowerCase();
+  const achados = INDICE.filter(x => x.txt.indexOf(t) !== -1);
+  let h = '<div class="cartao">';
+  h += '<span class="rotulo">Busca</span>';
+  h += '<h1 class="titulo-pagina">' + achados.length + ' resultado' + (achados.length === 1 ? '' : 's') + ' para “' + termo + '”</h1>';
+  if(!achados.length){
+    h += '<p class="vazio">Nada encontrado. Tente outra palavra — ex.: <strong>sincronizar</strong>, <strong>bench</strong>, <strong>PDV</strong>, <strong>foto</strong>, <strong>tag</strong>.</p>';
+  } else {
+    achados.forEach(x => {
+      const m = MOD_POR_ID[MOD_DA_AULA[x.id]];
+      h += '<button class="res-item" onclick="irPara(\'aula\',\'' + x.id + '\')">'
+         + '<div class="mod">' + m.icone + ' Módulo ' + (m._i + 1) + ' · ' + m.titulo + '</div>'
+         + '<div class="tit">' + AULAS[x.id].titulo + '</div></button>';
+    });
+  }
+  h += '<div class="acoes-aula"><button class="btn-nav" onclick="limparBusca()">← Limpar busca</button></div>';
+  h += '</div>';
+  return h;
+}
+
+let termoBusca = '';
+function limparBusca(){
+  termoBusca = '';
+  const i = document.getElementById('busca');
+  if(i) i.value = '';
+  document.getElementById('buscaLimpar').classList.remove('on');
+  render();
+}
+function limparBuscaSilencioso(){
+  if(!termoBusca) return;
+  termoBusca = '';
+  const i = document.getElementById('busca');
+  if(i) i.value = '';
+  const b = document.getElementById('buscaLimpar');
+  if(b) b.classList.remove('on');
+}
+
+/* ---------- render ---------- */
+function render(){
+  const tela = document.getElementById('tela');
+  const trilha = document.getElementById('trilha');
+  pintarTopo();
+
+  if(termoBusca.length >= 2){
+    trilha.innerHTML = '<span class="chip">Busca</span>';
+    tela.innerHTML = telaBusca(termoBusca);
+    return;
+  }
+
+  let migalhas = '';
+  if(atual === 'inicio'){
+    migalhas = '<span class="chip">Curso de Menu</span>';
+    tela.innerHTML = telaInicio();
+  } else if(atual === 'modulo'){
+    const m = MOD_POR_ID[contexto];
+    migalhas = '<span class="chip">Curso de Menu</span><span class="passo">Módulo ' + (m._i + 1) + '</span>';
+    tela.innerHTML = telaModulo();
+  } else if(atual === 'aula'){
+    const m = MOD_POR_ID[MOD_DA_AULA[contexto]];
+    migalhas = '<span class="chip">' + m.titulo + '</span>'
+             + '<span class="passo link" onclick="irPara(\'modulo\',\'' + m.id + '\')">Módulo ' + (m._i + 1) + '</span>'
+             + '<span class="passo">Aula ' + (m.aulas.indexOf(contexto) + 1) + '</span>';
+    tela.innerHTML = telaAula();
+  } else if(atual === 'checkpoint'){
+    const m = MODULOS.find(x => x.checkpoint === contexto);
+    migalhas = '<span class="chip">' + (m ? m.titulo : 'Checkpoint') + '</span><span class="passo">Checkpoint</span>';
+    tela.innerHTML = telaQuiz('checkpoint');
+  } else if(atual === 'prova'){
+    migalhas = '<span class="chip">Curso de Menu</span><span class="passo">Prova final</span>';
+    tela.innerHTML = telaQuiz('prova');
+  } else if(atual === 'ranking'){
+    migalhas = '<span class="chip">Curso de Menu</span><span class="passo">Ranking</span>';
+    tela.innerHTML = telaRanking();
+    if(syncLigado() && rankingEstado === 'vazio') carregarRanking(false);
+  } else if(atual === 'glossario'){
+    migalhas = '<span class="chip">Glossário</span>';
+    tela.innerHTML = telaGlossario();
+  }
+  trilha.innerHTML = migalhas;
+  if(atual === 'inicio') animarAnel(pctGeral());
+}
+
+/* ---------- start ---------- */
+document.getElementById('busca').addEventListener('input', function(e){
+  termoBusca = e.target.value;
+  document.getElementById('buscaLimpar').classList.toggle('on', termoBusca.length > 0);
+  render();
+});
+iniciarApp();
+
+</script>
+<div id="confete" aria-hidden="true"></div>
+<div id="toasts" role="status" aria-live="polite"></div>
+</body>
+</html>
